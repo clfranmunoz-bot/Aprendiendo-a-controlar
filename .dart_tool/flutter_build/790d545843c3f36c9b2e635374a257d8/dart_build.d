@@ -1,0 +1,1 @@
+ /Users/claudiofranciscomunozrubilar/Desktop/Aprender\ a\ controlar\ 2/.dart_tool/flutter_build/790d545843c3f36c9b2e635374a257d8/dart_build_result.json: 

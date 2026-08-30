@@ -1,0 +1,1 @@
+ /Users/claudiofranciscomunozrubilar/Desktop/Aprender\ a\ controlar\ 2/.dart_tool/flutter_build/c706bffba690a247f9218791c7730978/native_assets.json: 
