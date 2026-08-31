@@ -165,42 +165,40 @@ class HeroBlock extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // 3. TARJETA DESTACADA MODIFICABLE (HERO BANNER SLOT ELEGANTE)
+              // 3. TARJETA DESTACADA MODIFICABLE (HERO BANNER SLOT ELEGANTE DE ALTO IMPACTO)
               InkWell(
                 onTap: onBannerTap,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(20),
                 child: Container(
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isDark
-                          ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
-                          : [Colors.white, const Color(0xFFF8FAFC)],
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1D4ED8), Color(0xFF312E81), Color(0xFF0F172A)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: modoEdicionHero ? colors.azul : colors.bordeSuave,
-                      width: modoEdicionHero ? 1.8 : 1.0,
+                      color: modoEdicionHero ? Colors.amber : Colors.blueAccent.withValues(alpha: 0.4),
+                      width: modoEdicionHero ? 2.0 : 1.2,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: Colors.blue.withValues(alpha: 0.25),
+                        blurRadius: 14,
+                        offset: const Offset(0, 5),
                       ),
                     ],
                   ),
                   child: Row(
                     children: [
                       Container(
-                        width: 44,
-                        height: 44,
+                        width: 46,
+                        height: 46,
                         decoration: BoxDecoration(
-                          color: colors.azul.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: colors.azul.withValues(alpha: 0.25)),
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
                         ),
                         child: Center(
                           child: Text(
@@ -215,34 +213,35 @@ class HeroBlock extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
                               decoration: BoxDecoration(
-                                color: colors.azul.withValues(alpha: 0.12),
+                                color: Colors.blue.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
                               ),
                               child: Text(
-                                modoEdicionHero ? "TOCA PARA CAMBIAR BANNER" : "MÓDULO DESTACADO",
-                                style: TextStyle(
-                                  color: colors.azul,
+                                modoEdicionHero ? "CAMBIAR BANNER ✏️" : "MÓDULO PRINCIPAL",
+                                style: const TextStyle(
+                                  color: Color(0xFFBFDBFE),
                                   fontSize: 9.5,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.5,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 0.6,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 3),
+                            const SizedBox(height: 4),
                             Text(
                               bannerSlot?.titulo ?? "Paso a paso del turno",
-                              style: TextStyle(
-                                color: colors.azulOscuro,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14.5,
                               ),
                             ),
                             Text(
-                              bannerSlot?.descripcion ?? "Toca para registrar tareas y verificar control diario",
+                              bannerSlot?.descripcion ?? "Control diario, tareas críticas de terreno y verificación",
                               style: TextStyle(
-                                color: colors.grisTexto,
+                                color: const Color(0xFFDBEAFE).withValues(alpha: 0.85),
                                 fontSize: 11.5,
                               ),
                               maxLines: 1,
@@ -253,20 +252,24 @@ class HeroBlock extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
-                          color: modoEdicionHero ? Colors.amber.withValues(alpha: 0.25) : colors.azul.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: modoEdicionHero ? Colors.amber : colors.azul.withValues(alpha: 0.3),
-                          ),
+                          color: modoEdicionHero ? Colors.amber : Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
                         child: Text(
                           modoEdicionHero ? "Editar ✏️" : "Entrar ➔",
                           style: TextStyle(
-                            color: modoEdicionHero ? Colors.amber.shade800 : colors.azul,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
+                            color: modoEdicionHero ? const Color(0xFF0F172A) : const Color(0xFF1E3A8A),
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
                       ),

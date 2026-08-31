@@ -71,55 +71,78 @@ class _ShortcutSlotState extends State<ShortcutSlot> {
               children: [
                 // Content of the Slot
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  child: Center(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: isEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.add_circle_outline,
-                                  color: colors.grisSecundario.withValues(alpha: 0.8),
-                                  size: 28,
+                  padding: const EdgeInsets.all(12),
+                  child: isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: colors.grisSecundario.withValues(alpha: 0.8),
+                                size: 28,
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                "Slot ${widget.slotIndex + 1}\n(Vacío)",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: colors.grisSecundario,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  "Slot ${widget.slotIndex + 1}\n(Vacío)",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: colors.grisSecundario,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 38,
+                              height: 38,
+                              decoration: BoxDecoration(
+                                color: colors.getMenuColor(widget.seccion!.colorIndex).withValues(alpha: 0.18),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: colors.getMenuColor(widget.seccion!.colorIndex).withValues(alpha: 0.35),
                                 ),
-                              ],
-                            )
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
+                              ),
+                              child: Center(
+                                child: Text(
                                   widget.seccion!.emoji,
-                                  style: const TextStyle(fontSize: 28),
+                                  style: const TextStyle(fontSize: 20),
                                 ),
-                                const SizedBox(height: 6),
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Text(
                                   widget.seccion!.titulo,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: colors.azulOscuro,
                                     fontSize: 12.5,
                                     fontWeight: FontWeight.bold,
-                                    height: 1.15,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  widget.seccion!.descripcion,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: colors.grisTexto,
+                                    fontSize: 10.5,
                                   ),
                                 ),
                               ],
                             ),
-                    ),
-                  ),
+                          ],
+                        ),
                 ),
 
                 // Delete Button (if in editable mode and not empty)
