@@ -26,6 +26,7 @@ import 'package:aprender_a_controlar/screens/chatbot_screen.dart';
 import 'package:aprender_a_controlar/screens/notas_screen.dart';
 import 'package:aprender_a_controlar/screens/simulacro_screen.dart';
 import 'package:aprender_a_controlar/screens/recordatorios_screen.dart';
+import 'package:aprender_a_controlar/screens/mapa_satelital_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -928,6 +929,13 @@ class _RootNavigatorState extends State<_RootNavigator> {
           onToggleModoOscuro: onToggle,
           onNavigate: _navigate,
           perfilActivo: _perfilActivo,
+        );
+
+      case AppRoutes.mapaSatelital:
+        return MapaSatelitalScreen(
+          modoOscuro: modoOscuro,
+          onToggleModoOscuro: onToggle,
+          onNavigate: _navigate,
         );
 
       case AppRoutes.procedimientosTeoricos:
