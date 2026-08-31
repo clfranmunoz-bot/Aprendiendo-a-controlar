@@ -306,64 +306,21 @@ class HeroBlock extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-              // 5. GRID DE 4 SLOTS PERSONALIZABLES
+              // 5. 4 RECTÁNGULOS EN HILERA (LISTA VERTICAL DE TARJETAS HORIZONTALES)
               Expanded(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            child: ShortcutSlot(
-                              slotIndex: 0,
-                              seccion: slots[0],
-                              isEditable: modoEdicionHero,
-                              onTap: () => onSlotTap(0),
-                              onDelete: () => onSlotDelete(0),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: ShortcutSlot(
-                              slotIndex: 1,
-                              seccion: slots[1],
-                              isEditable: modoEdicionHero,
-                              onTap: () => onSlotTap(1),
-                              onDelete: () => onSlotDelete(1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            child: ShortcutSlot(
-                              slotIndex: 2,
-                              seccion: slots[2],
-                              isEditable: modoEdicionHero,
-                              onTap: () => onSlotTap(2),
-                              onDelete: () => onSlotDelete(2),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: ShortcutSlot(
-                              slotIndex: 3,
-                              seccion: slots[3],
-                              isEditable: modoEdicionHero,
-                              onTap: () => onSlotTap(3),
-                              onDelete: () => onSlotDelete(3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 4,
+                  separatorBuilder: (context, index) => const SizedBox(height: 8),
+                  itemBuilder: (context, index) {
+                    return ShortcutSlot(
+                      slotIndex: index,
+                      seccion: slots[index],
+                      isEditable: modoEdicionHero,
+                      onTap: () => onSlotTap(index),
+                      onDelete: () => onSlotDelete(index),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 10),
