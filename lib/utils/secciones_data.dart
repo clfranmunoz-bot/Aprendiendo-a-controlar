@@ -8,7 +8,7 @@ class PilarInfo {
   const PilarInfo({required this.id, required this.titulo, required this.emoji});
 }
 
-final List<PilarInfo> pilaresApp = const [
+const List<PilarInfo> pilaresApp = [
   PilarInfo(id: "todos", titulo: "Todos", emoji: "⚡"),
   PilarInfo(id: "campo", titulo: "Herramientas de Campo", emoji: "🛠️"),
   PilarInfo(id: "manual", titulo: "Manual y Protocolos", emoji: "📚"),
@@ -56,6 +56,14 @@ final List<SeccionApp> catalogoSecciones = [
     descripcion: "Cámara de inspección con ayuda memoria visual",
     emoji: "📷",
     colorIndex: 1,
+    pilar: "campo",
+  ),
+  const SeccionApp(
+    id: "mapa_satelital",
+    titulo: "Mapa Satelital & GPS",
+    descripcion: "Ubicación offline en faena, pozos, distancias y UTM",
+    emoji: "🛰️",
+    colorIndex: 6,
     pilar: "campo",
   ),
 
@@ -214,6 +222,14 @@ final List<SeccionApp> catalogoSecciones = [
     descripcion: "Ecuaciones con LaTeX, desglose y ejemplos resueltos",
     emoji: "📐",
     colorIndex: 19,
+    pilar: "asistentes",
+  ),
+  const SeccionApp(
+    id: "instructor_panel",
+    titulo: "Panel del Instructor",
+    descripcion: "Supervisión, ranking de rendimiento y reportes grupales (PIN: 9900)",
+    emoji: "👥",
+    colorIndex: 23,
     pilar: "asistentes",
   ),
 ];

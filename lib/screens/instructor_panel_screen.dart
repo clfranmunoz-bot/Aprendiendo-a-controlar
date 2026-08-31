@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aprender_a_controlar/utils/app_colors.dart';
@@ -41,6 +40,7 @@ class _OperadorStats {
 
 class _InstructorPanelScreenState extends State<InstructorPanelScreen> {
   bool _cargando = true;
+  bool _autenticado = false;
   List<_OperadorStats> _ranking = [];
   double _precisionGrupo = 0;
   int _cuadernosCompletadosGrupo = 0;
@@ -48,7 +48,82 @@ class _InstructorPanelScreenState extends State<InstructorPanelScreen> {
   @override
   void initState() {
     super.initState();
-    _cargarDatosGrupales();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pedirPin();
+    });
+  }
+
+  Future<void> _pedirPin() async {
+    final controller = TextEditingController();
+    bool pinCorrecto = false;
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.lock_outline, color: Colors.blue),
+            SizedBox(width: 8),
+            Text("Acceso Instructor"),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Ingresa el PIN de supervisión para acceder al Panel de Instructor (PIN por defecto: 9900):",
+              style: TextStyle(fontSize: 13),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              obscureText: true,
+              maxLength: 6,
+              autofocus: true,
+              decoration: const InputDecoration(
+                labelText: "PIN (ej. 9900)",
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              widget.onNavigate('home');
+            },
+            child: const Text("Cancelar"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final esValido = await StatsService.validarPinSupervisor(controller.text);
+              if (esValido) {
+                pinCorrecto = true;
+                if (ctx.mounted) Navigator.pop(ctx);
+              } else {
+                if (ctx.mounted) {
+                  ScaffoldMessenger.of(ctx).showSnackBar(
+                    const SnackBar(content: Text("❌ PIN incorrecto. Intenta nuevamente.")),
+                  );
+                }
+              }
+            },
+            child: const Text("Ingresar"),
+          ),
+        ],
+      ),
+    );
+
+    if (pinCorrecto) {
+      setState(() {
+        _autenticado = true;
+      });
+      _cargarDatosGrupales();
+    }
   }
 
   Future<void> _cargarDatosGrupales() async {
@@ -229,10 +304,17 @@ class _InstructorPanelScreenState extends State<InstructorPanelScreen> {
             tooltip: "Cambiar PIN",
             onPressed: _mostrarDialogoCambiarPin,
           ),
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: "Volver al Inicio",
+            onPressed: () => widget.onNavigate('home'),
+          ),
         ],
       ),
-      body: _cargando
-          ? const Center(child: CircularProgressIndicator())
+      body: !_autenticado
+          ? const SizedBox()
+          : _cargando
+              ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
