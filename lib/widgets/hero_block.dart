@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aprender_a_controlar/models/seccion.dart';
 import 'package:aprender_a_controlar/utils/app_colors.dart';
+import 'package:aprender_a_controlar/utils/secciones_data.dart';
 import 'package:aprender_a_controlar/widgets/shortcut_slot.dart';
 import 'package:aprender_a_controlar/widgets/theme_toggle_switch.dart';
 import 'package:aprender_a_controlar/widgets/max_width_container.dart';
@@ -99,72 +100,143 @@ class HeroBlock extends StatelessWidget {
               ),
               const SizedBox(height: 14),
 
-              // 2. SALUDO PERSONALIZADO
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              // 2. SALUDO PERSONALIZADO Y BADGE FAENA
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    "¡Hola, $perfilActivo! 👋",
-                    style: TextStyle(
-                      color: isDark ? Colors.white : colors.azulOscuro,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -0.4,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "¡Hola, $perfilActivo! 👋",
+                          style: TextStyle(
+                            color: isDark ? Colors.white : colors.azulOscuro,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -0.4,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "Control de sondaje en terreno • Listo para Operar",
+                          style: TextStyle(
+                            color: isDark ? Colors.white70 : colors.grisTexto,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    "Control de sondaje en terreno • Listo para Controlar.",
-                    style: TextStyle(
-                      color: isDark ? Colors.white70 : colors.grisTexto,
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w500,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: colors.verde.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: colors.verde.withValues(alpha: 0.4)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: colors.verde,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "En Faena",
+                          style: TextStyle(
+                            color: colors.verde,
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
 
-              // 3. TARJETA DESTACADA MODIFICABLE (HERO BANNER SLOT)
+              // 3. TARJETA DESTACADA MODIFICABLE (HERO BANNER SLOT ELEGANTE)
               InkWell(
                 onTap: onBannerTap,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(18),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: modoEdicionHero ? colors.azul.withValues(alpha: 0.15) : colors.superficie.withValues(alpha: isDark ? 0.6 : 0.85),
-                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      colors: isDark
+                          ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
+                          : [Colors.white, const Color(0xFFF8FAFC)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(18),
                     border: Border.all(
                       color: modoEdicionHero ? colors.azul : colors.bordeSuave,
-                      width: modoEdicionHero ? 1.5 : 1.0,
+                      width: modoEdicionHero ? 1.8 : 1.0,
                     ),
-                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8)],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        width: 44,
+                        height: 44,
                         decoration: BoxDecoration(
-                          color: colors.azul.withValues(alpha: 0.12),
-                          shape: BoxShape.circle,
+                          color: colors.azul.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: colors.azul.withValues(alpha: 0.25)),
                         ),
-                        child: Text(
-                          bannerSlot?.emoji ?? "📋",
-                          style: const TextStyle(fontSize: 20),
+                        child: Center(
+                          child: Text(
+                            bannerSlot?.emoji ?? "📋",
+                            style: const TextStyle(fontSize: 22),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: colors.azul.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                modoEdicionHero ? "TOCA PARA CAMBIAR BANNER" : "MÓDULO DESTACADO",
+                                style: TextStyle(
+                                  color: colors.azul,
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 3),
                             Text(
                               bannerSlot?.titulo ?? "Paso a paso del turno",
                               style: TextStyle(
                                 color: colors.azulOscuro,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13.5,
+                                fontSize: 14,
                               ),
                             ),
                             Text(
@@ -179,10 +251,24 @@ class HeroBlock extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Icon(
-                        modoEdicionHero ? Icons.edit : Icons.arrow_forward_ios,
-                        size: 16,
-                        color: modoEdicionHero ? colors.azul : colors.grisSecundario,
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: modoEdicionHero ? Colors.amber.withValues(alpha: 0.25) : colors.azul.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: modoEdicionHero ? Colors.amber : colors.azul.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Text(
+                          modoEdicionHero ? "Editar ✏️" : "Entrar ➔",
+                          style: TextStyle(
+                            color: modoEdicionHero ? Colors.amber.shade800 : colors.azul,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -207,7 +293,7 @@ class HeroBlock extends StatelessWidget {
                   ),
                   if (!modoEdicionHero)
                     Text(
-                      "Mantén o usa '⚙️' para editar",
+                      "Usa '⚙️' para personalizar",
                       style: TextStyle(
                         color: isDark ? Colors.white38 : colors.grisSecundario,
                         fontSize: 11,
@@ -275,6 +361,42 @@ class HeroBlock extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // 6. BARRA DE NAVEGACIÓN POR CATEGORÍAS DE APOYO (CARRUSEL HORIZONTAL)
+              SizedBox(
+                height: 32,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: pilaresApp.length,
+                  itemBuilder: (context, i) {
+                    final pilar = pilaresApp[i];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: InkWell(
+                        onTap: onOpenMenu,
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white.withValues(alpha: 0.8),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: colors.bordeSuave.withValues(alpha: 0.6)),
+                          ),
+                          child: Text(
+                            "${pilar.emoji} ${pilar.titulo}",
+                            style: TextStyle(
+                              color: colors.azulOscuro,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
