@@ -147,18 +147,25 @@ class _CollapsibleLatexTextState extends State<CollapsibleLatexText> {
       );
     }
 
-    // Check for inline LaTeX $...$ or $$...$$
-    final pattern = RegExp(r'\$\$(.*?)\$\$|\$(.*?)\$');
-    if (!pattern.hasMatch(t)) {
-      return Text(t, style: widget.textStyle);
-    }
+    // Check for inline LaTeX $...$ or $$...$$ or markdown **bold**
+    final spans = _parseMarkdownAndLatex(t, widget.textStyle);
 
+    return Text.rich(
+      TextSpan(children: spans, style: widget.textStyle),
+    );
+  }
+
+  List<InlineSpan> _parseMarkdownAndLatex(String text, TextStyle baseStyle) {
     final spans = <InlineSpan>[];
-    int start = 0;
+    
+    // First, split by LaTeX formulas $...$ or $$...$$
+    final latexPattern = RegExp(r'\$\$(.*?)\$\$|\$(.*?)\$');
+    int lastIndex = 0;
 
-    for (final match in pattern.allMatches(t)) {
-      if (match.start > start) {
-        spans.add(TextSpan(text: t.substring(start, match.start)));
+    for (final match in latexPattern.allMatches(text)) {
+      if (match.start > lastIndex) {
+        final nonLatexText = text.substring(lastIndex, match.start);
+        spans.addAll(_parseBoldSpans(nonLatexText, baseStyle));
       }
 
       final latexContent = (match.group(1) ?? match.group(2) ?? '').trim();
@@ -170,7 +177,7 @@ class _CollapsibleLatexTextState extends State<CollapsibleLatexText> {
               padding: const EdgeInsets.symmetric(horizontal: 2.0),
               child: Math.tex(
                 latexContent,
-                textStyle: widget.textStyle.copyWith(
+                textStyle: baseStyle.copyWith(
                   color: widget.latexColor,
                   fontSize: widget.latexFontSize * 0.9,
                 ),
@@ -178,7 +185,7 @@ class _CollapsibleLatexTextState extends State<CollapsibleLatexText> {
                 onErrorFallback: (FlutterMathException e) {
                   return Text(
                     latexContent,
-                    style: widget.textStyle.copyWith(
+                    style: baseStyle.copyWith(
                       color: widget.latexColor,
                       fontFamily: 'monospace',
                     ),
@@ -189,15 +196,38 @@ class _CollapsibleLatexTextState extends State<CollapsibleLatexText> {
           ),
         );
       }
-      start = match.end;
+      lastIndex = match.end;
     }
 
-    if (start < t.length) {
-      spans.add(TextSpan(text: t.substring(start)));
+    if (lastIndex < text.length) {
+      final remainingText = text.substring(lastIndex);
+      spans.addAll(_parseBoldSpans(remainingText, baseStyle));
     }
 
-    return Text.rich(
-      TextSpan(children: spans, style: widget.textStyle),
-    );
+    return spans;
+  }
+
+  List<InlineSpan> _parseBoldSpans(String text, TextStyle baseStyle) {
+    final spans = <InlineSpan>[];
+    final parts = text.split('**');
+
+    for (int i = 0; i < parts.length; i++) {
+      final part = parts[i];
+      if (part.isEmpty) continue;
+
+      final isBold = (i % 2 == 1);
+      final style = baseStyle.copyWith(
+        fontWeight: isBold ? FontWeight.bold : baseStyle.fontWeight,
+        color: baseStyle.color,
+      );
+
+      final cleanText = part.replaceAll('*', '');
+      spans.add(TextSpan(
+        text: cleanText,
+        style: style,
+      ));
+    }
+
+    return spans;
   }
 }

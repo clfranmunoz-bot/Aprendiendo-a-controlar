@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:aprender_a_controlar/utils/app_colors.dart';
 import 'package:aprender_a_controlar/widgets/drawer_menu.dart';
 import 'package:aprender_a_controlar/services/chatbot_knowledge_service.dart';
@@ -24,11 +25,15 @@ class _ChatMessage {
   final String text;
   final bool isUser;
   final DateTime timestamp;
+  final String? navRoute;
+  final String? navLabel;
 
   _ChatMessage({
     required this.text,
     required this.isUser,
     required this.timestamp,
+    this.navRoute,
+    this.navLabel,
   });
 }
 
@@ -37,11 +42,16 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _inputController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
+  String _categoriaSeleccionada = "🧮 Fórmulas";
+
   final List<_ChatMessage> _messages = [
     _ChatMessage(
-      text: "👋 ¡Hola! Soy **DrillBot**, un asistente básico de apoyo operacional.\n\n"
-          "Estoy programado para responder **preguntas sencillas y directas** sobre metrajes de herramientas (barras, barriles, extensión Reflex), fórmulas de control y listas de procedimientos o documentos obligatorios de la app.\n\n"
-          "Para evitar confusiones en terreno, si no comprendo una duda te pediré consultarla con tu Supervisor.",
+      text: """👋 ¡Hola! Soy **DrillBot 2.0**, tu Asistente Técnico Operacional de Terreno.
+
+💡 **¿En qué puedo ayudarte hoy?**
+• **🧮 Cálculos automáticos:** Escribe por ejemplo 'contra anterior 0.80 agregue barra 3.00 avance 1.50' o 'perfore 1.50 y recupere 1.42'.
+• **🚨 Diagnósticos de Terreno:** Pregúntame sobre 'testigo quemado', 'perdida de agua', 'overshot no engancha', 'caida de presion'.
+• **🛠️ Metrajes & Normas:** Metrajes de barras, barriles NQ/HQ/PQ, punto muerto y rotulación de cajas.""",
       isUser: false,
       timestamp: DateTime.now(),
     ),
@@ -63,7 +73,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     _scrollToBottom();
 
     // Process Bot Response
-    Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 250), () {
       final match = ChatbotKnowledgeService.buscarRespuesta(query);
       if (mounted) {
         setState(() {
@@ -71,6 +81,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             text: match['response'] as String,
             isUser: false,
             timestamp: DateTime.now(),
+            navRoute: match['navRoute'] as String?,
+            navLabel: match['navLabel'] as String?,
           ));
         });
         _scrollToBottom();
@@ -93,7 +105,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
-    final sugerencias = ChatbotKnowledgeService.obtenerSugerenciasRapidas();
+    final categorias = ChatbotKnowledgeService.obtenerCategoriasSugerencias();
 
     return Scaffold(
       key: _scaffoldKey,
@@ -108,13 +120,25 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         title: Row(
           children: [
             const Text("🤖 ", style: TextStyle(fontSize: 22)),
-            Text(
-              "DrillBot — Asistente",
-              style: TextStyle(
-                color: colors.azulOscuro,
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "DrillBot 2.0 — Asistente",
+                  style: TextStyle(
+                    color: colors.azulOscuro,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  "Inteligencia operacional de terreno",
+                  style: TextStyle(
+                    color: colors.grisTexto,
+                    fontSize: 10.5,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -133,38 +157,77 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       ),
       body: Column(
         children: [
-          // Chips Bar of Quick Suggestions
+          // 1. Selector de Categorías Temáticas
           Container(
-            height: 48,
-            color: colors.superficie,
-            child: ListView.builder(
+            height: 42,
+            color: colors.superficieSuave,
+            child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              itemCount: sugerencias.length,
-              itemBuilder: (context, idx) {
-                final sug = sugerencias[idx];
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              children: categorias.keys.map((cat) {
+                final esSelec = cat == _categoriaSeleccionada;
                 return Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 6),
+                  child: InkWell(
+                    onTap: () => setState(() => _categoriaSeleccionada = cat),
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: esSelec ? colors.azul : colors.superficie,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: esSelec ? colors.azul : colors.bordeSuave,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          cat,
+                          style: TextStyle(
+                            color: esSelec ? Colors.white : colors.azulOscuro,
+                            fontSize: 11.5,
+                            fontWeight: esSelec ? FontWeight.bold : FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+
+          // 2. Chips Bar de Preguntas Frecuentes de la Categoría Activa
+          Container(
+            height: 44,
+            color: colors.superficie,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              children: (categorias[_categoriaSeleccionada] ?? []).map((sug) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 6.0),
                   child: ActionChip(
                     backgroundColor: colors.azulClaro,
                     side: BorderSide.none,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     label: Text(
                       sug,
                       style: TextStyle(
                         color: colors.azul,
-                        fontSize: 12,
+                        fontSize: 11.5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     onPressed: () => _sendMessage(sug),
                   ),
                 );
-              },
+              }).toList(),
             ),
           ),
           const Divider(height: 1),
 
-          // Messages History
+          // 3. Historial de Conversación
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -177,14 +240,14 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             ),
           ),
 
-          // Bottom Input Bar
+          // 4. Barra Inferior de Entrada
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: colors.superficie,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
+                  color: Colors.black.withOpacity(0.05),
                   blurRadius: 4,
                   offset: const Offset(0, -2),
                 ),
@@ -199,7 +262,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                       textInputAction: TextInputAction.send,
                       onSubmitted: _sendMessage,
                       decoration: InputDecoration(
-                        hintText: "Escribe tu pregunta sobre sondaje...",
+                        hintText: "Ej: contra anterior 0.80 agregué 3.00 avance 1.50...",
+                        hintStyle: TextStyle(color: colors.grisTexto, fontSize: 12.5),
                         filled: true,
                         fillColor: colors.fondo,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -260,25 +324,77 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                   bottomLeft: Radius.circular(isUser ? 16 : 4),
                   bottomRight: Radius.circular(isUser ? 4 : 16),
                 ),
+                border: Border.all(
+                  color: isUser ? colors.azul : colors.bordeSuave,
+                ),
               ),
-              child: isUser
-                  ? Text(
-                      msg.text,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  : textWithLatex(
-                      colors,
-                      msg.text,
-                      style: TextStyle(
-                        color: colors.azulOscuro,
-                        fontSize: 13.5,
-                        height: 1.4,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  isUser
+                      ? Text(
+                          msg.text,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      : textWithLatex(
+                          colors,
+                          msg.text,
+                          style: TextStyle(
+                            color: colors.azulOscuro,
+                            fontSize: 13.5,
+                            height: 1.4,
+                          ),
+                        ),
+                  if (!isUser) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (msg.navRoute != null && msg.navLabel != null)
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => widget.onNavigate(msg.navRoute!),
+                              icon: const Icon(Icons.arrow_forward_ios, size: 12),
+                              label: Text(
+                                msg.navLabel!,
+                                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: colors.azul,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          )
+                        else
+                          const SizedBox.shrink(),
+                        IconButton(
+                          icon: Icon(Icons.copy, size: 15, color: colors.grisSecundario),
+                          tooltip: "Copiar texto",
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: msg.text));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Respuesta copiada al portapapeles"),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
+                  ],
+                ],
+              ),
             ),
           ),
           if (isUser) const SizedBox(width: 8),

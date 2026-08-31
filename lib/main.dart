@@ -938,9 +938,11 @@ class _RootNavigatorState extends State<_RootNavigator> {
           onNavigate: _navigate,
         );
 
+      case "procedimientos":
       case AppRoutes.procedimientosTeoricos:
         return ProcedimientosScreen(onBack: () => _navigatorKey.currentState?.pop());
 
+      case "documentos":
       case AppRoutes.documentosObligatorios:
         return DocumentosObligatoriosScreen(onBack: () => _navigatorKey.currentState?.pop());
 

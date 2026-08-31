@@ -35,8 +35,8 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
   final List<Map<String, dynamic>> _phases = [
     {"title": "Inicio de Turno", "icon": Icons.wb_sunny_outlined, "color": Colors.blue},
     {"title": "Control Operativo", "icon": Icons.build_outlined, "color": Colors.green},
-    {"title": "Protocolos Especiales", "icon": Icons.warning_amber_outlined, "color": Colors.orange},
     {"title": "Cierre de Turno", "icon": Icons.nightlight_round_outlined, "color": Colors.purple},
+    {"title": "Protocolos Especiales", "icon": Icons.warning_amber_outlined, "color": Colors.orange},
   ];
 
   final List<Map<String, dynamic>> _checklistItems = [
@@ -135,7 +135,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     // Phase 2: Especiales
     {
       "id": 11,
-      "phase": 2,
+      "phase": 3,
       "icon": Icons.water_drop_outlined,
       "title": "Control de Pérdida de Retorno de Agua",
       "desc": "Supervisar el volumen de retorno de fluido e informar de inmediato ante pérdidas de circulación en el pozo.",
@@ -143,7 +143,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     },
     {
       "id": 12,
-      "phase": 2,
+      "phase": 3,
       "icon": Icons.compass_calibration_outlined,
       "title": "Medición de Orientación de Testigo",
       "desc": "Verificar la correcta colocación y lectura del instrumento de orientación de testigo (Reflex / Champ).",
@@ -151,7 +151,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     },
     {
       "id": 13,
-      "phase": 2,
+      "phase": 3,
       "icon": Icons.report_problem_outlined,
       "title": "Notificación de Incidencias Operacionales",
       "desc": "Reportar anomalías como atascamientos de sarta, desgaste prematuro de coronas o fallas mecánicas.",
@@ -161,7 +161,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     // Phase 3: Cierre
     {
       "id": 14,
-      "phase": 3,
+      "phase": 2,
       "icon": Icons.calculate_outlined,
       "title": "Conciliación de Fondo Final y Sarta",
       "desc": "Verificar el fondo acumulado con la fórmula: Herramientas - Contra - PM, asegurando coincidencia total.",
@@ -169,7 +169,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     },
     {
       "id": 15,
-      "phase": 3,
+      "phase": 2,
       "icon": Icons.camera_alt_outlined,
       "title": "Registro Fotográfico de Cajas",
       "desc": "Capturar fotografías de alta resolución de todas las cajas del turno en ángulo perpendicular y sin sombras.",
@@ -177,7 +177,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     },
     {
       "id": 16,
-      "phase": 3,
+      "phase": 2,
       "icon": Icons.assignment_turned_in_outlined,
       "title": "Cierre de Planilla Física de Terreno",
       "desc": "Consolidar metros perforados, porcentaje de recuperación promedio y firmar el reporte con el perforista.",
@@ -185,7 +185,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     },
     {
       "id": 17,
-      "phase": 3,
+      "phase": 2,
       "icon": Icons.lock_outline,
       "title": "Entrega Final y Cierre de Turno",
       "desc": "Entregar copia de la planilla al supervisor, resguardar las muestras y cerrar el turno formalmente.",
