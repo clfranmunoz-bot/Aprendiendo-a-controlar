@@ -45,6 +45,7 @@ class _ShortcutSlotState extends State<ShortcutSlot> {
           duration: const Duration(milliseconds: 150),
           curve: Curves.easeInOut,
           child: Container(
+            height: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
               color: isEmpty

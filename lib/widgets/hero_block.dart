@@ -306,21 +306,23 @@ class HeroBlock extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-              // 5. 4 RECTÁNGULOS EN HILERA (LISTA VERTICAL DE TARJETAS HORIZONTALES)
+              // 5. 4 RECTÁNGULOS QUE ABARCAN TODO EL LARGO DE LA PANTALLA
               Expanded(
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: 4,
-                  separatorBuilder: (context, index) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) {
-                    return ShortcutSlot(
-                      slotIndex: index,
-                      seccion: slots[index],
-                      isEditable: modoEdicionHero,
-                      onTap: () => onSlotTap(index),
-                      onDelete: () => onSlotDelete(index),
-                    );
-                  },
+                child: Column(
+                  children: [
+                    for (int index = 0; index < 4; index++) ...[
+                      if (index > 0) const SizedBox(height: 8),
+                      Expanded(
+                        child: ShortcutSlot(
+                          slotIndex: index,
+                          seccion: slots[index],
+                          isEditable: modoEdicionHero,
+                          onTap: () => onSlotTap(index),
+                          onDelete: () => onSlotDelete(index),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -624,7 +626,12 @@ class HeroBlock extends StatelessWidget {
             children: [
               Text(icon, style: const TextStyle(fontSize: 16)),
               const SizedBox(width: 6),
-              Text(titulo, style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13.5)),
+              Expanded(
+                child: Text(
+                  titulo,
+                  style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13.5),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 6),
