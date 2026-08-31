@@ -403,7 +403,7 @@ class HeroBlock extends StatelessWidget {
       onTap: () => _mostrarMenuPerfiles(context),
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         decoration: BoxDecoration(
           color: colors.azul.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(20),
@@ -412,8 +412,8 @@ class HeroBlock extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("👤", style: TextStyle(fontSize: 11)),
-            const SizedBox(width: 4),
+            const Text("👤", style: TextStyle(fontSize: 10.5)),
+            const SizedBox(width: 3),
             Flexible(
               child: Text(
                 perfilActivo,
@@ -421,7 +421,7 @@ class HeroBlock extends StatelessWidget {
                 maxLines: 1,
                 style: TextStyle(
                   color: colors.azul,
-                  fontSize: 11,
+                  fontSize: 10.5,
                   fontWeight: FontWeight.bold,
                 ),
               ),
