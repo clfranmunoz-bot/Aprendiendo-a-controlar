@@ -1,90 +1,10 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:aprender_a_controlar/utils/app_colors.dart';
 import 'package:aprender_a_controlar/widgets/drawer_menu.dart';
+import 'package:aprender_a_controlar/models/simulacro_turno_model.dart';
+import 'package:aprender_a_controlar/widgets/latex_formula.dart';
+import 'package:aprender_a_controlar/widgets/calculadora_bolsillo.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Modelo interno de una corrida de perforación
-// ─────────────────────────────────────────────────────────────────────────────
-class _Corrida {
-  final int numero;
-  final double fondoAnterior;     // Desde (m)
-  final double metrosPerforados;  // Lo que debe calcular el usuario
-  final double testigoReal;       // Testigo real para comparar
-  final bool conAdicion;          // ¿Se agregó una barra?
-
-  // Entrada del usuario
-  double? perforadoIngresado;
-  double? testigoIngresado;
-  double? contraIngresada;
-
-  _Corrida({
-    required this.numero,
-    required this.fondoAnterior,
-    required this.metrosPerforados,
-    required this.testigoReal,
-    this.conAdicion = false,
-  });
-
-  double get fondoNuevo => fondoAnterior + metrosPerforados;
-  double get recuperacionReal => metrosPerforados > 0 ? (testigoReal / metrosPerforados) * 100 : 0;
-  double? get recuperacionIngresada => (testigoIngresado != null && perforadoIngresado != null && perforadoIngresado! > 0)
-      ? (testigoIngresado! / perforadoIngresado!) * 100 : null;
-
-  bool get perforadoCorrecto => perforadoIngresado != null && (perforadoIngresado! - metrosPerforados).abs() <= 0.05;
-  bool get testiguoCorrecto => testigoIngresado != null && (testigoIngresado! - testigoReal).abs() <= 0.05;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Generador de turno aleatorio
-// ─────────────────────────────────────────────────────────────────────────────
-class _GeneradorTurno {
-  static const double _largoBarra = 3.00;
-  static const double _largoBarril = 4.15;
-  static const double _largoExtension = 0.40;
-
-  final String dificultad; // 'Básico', 'Intermedio', 'Avanzado'
-  final Random _rng = Random();
-
-  _GeneradorTurno(this.dificultad);
-
-  double get pm => 0.40 + _rng.nextDouble() * 0.20; // 0.40 – 0.60
-
-  int get cantidadBarras {
-    final base = 5 + _rng.nextInt(6); // 5–10 barras
-    return base;
-  }
-
-  List<_Corrida> generarCorridas(double fondoInicial) {
-    final int n = dificultad == 'Básico' ? 3 : dificultad == 'Intermedio' ? 4 : 5;
-    final corridas = <_Corrida>[];
-    double fondo = fondoInicial;
-    for (int i = 0; i < n; i++) {
-      final avance = 1.5 + _rng.nextDouble() * 1.5; // 1.50–3.00 m
-      final avanceR = double.parse(avance.toStringAsFixed(2));
-      final recPct = dificultad == 'Básico'
-          ? 0.85 + _rng.nextDouble() * 0.15 // 85–100%
-          : dificultad == 'Intermedio'
-              ? 0.70 + _rng.nextDouble() * 0.25 // 70–95%
-              : 0.50 + _rng.nextDouble() * 0.40; // 50–90%
-      final testigo = double.parse((avanceR * recPct).toStringAsFixed(2));
-      final adicion = dificultad != 'Básico' && i == n ~/ 2;
-      corridas.add(_Corrida(
-        numero: i + 1,
-        fondoAnterior: double.parse(fondo.toStringAsFixed(2)),
-        metrosPerforados: avanceR,
-        testigoReal: testigo,
-        conAdicion: adicion,
-      ));
-      fondo += avanceR;
-    }
-    return corridas;
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Principal del Simulacro
-// ─────────────────────────────────────────────────────────────────────────────
 class SimulacroScreen extends StatefulWidget {
   final Function(String) onNavigate;
   final bool modoOscuro;
@@ -109,41 +29,42 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
   // Estado del simulacro
   String _dificultad = 'Básico';
   int _etapa = 0; // 0=Config, 1=Corridas, 2=Evaluación
-  late double _pm;
-  late int _nBarras;
-  late double _fondoInicial;
-  late List<_Corrida> _corridas;
+  late TurnoConfiguracion _config;
+  late List<CorridaSimulada> _corridas;
   int _corridaActual = 0;
 
-  // Controladores de texto para la corrida actual
-  final _ctrlPerforado = TextEditingController();
-  final _ctrlTestigo = TextEditingController();
-  final _ctrlContra = TextEditingController();
+  // Controladores de texto para la planilla de la corrida
+  final _ctrlAvance = TextEditingController();
+  final _ctrlFondoHasta = TextEditingController();
+  final _ctrlRecuperacion = TextEditingController();
+  final _ctrlPerdida = TextEditingController();
 
   bool _corridaEnviada = false;
-
-  final Random _rng = Random();
+  bool _showCalculator = false;
+  Offset _calcPosition = const Offset(80, 220);
 
   void _iniciarSimulacro() {
-    final gen = _GeneradorTurno(_dificultad);
-    _pm = double.parse(gen.pm.toStringAsFixed(2));
-    _nBarras = gen.cantidadBarras;
-    _fondoInicial = 20.0 + _rng.nextInt(80).toDouble(); // Entre 20 y 99 m
-    _fondoInicial = double.parse(_fondoInicial.toStringAsFixed(2));
-    _corridas = gen.generarCorridas(_fondoInicial);
+    _config = GeneradorSimulacion.generarConfiguracion(_dificultad);
+    _corridas = GeneradorSimulacion.generarCorridas(_config);
     _corridaActual = 0;
     _corridaEnviada = false;
-    _ctrlPerforado.clear();
-    _ctrlTestigo.clear();
-    _ctrlContra.clear();
+    _limpiarControladores();
     setState(() => _etapa = 1);
+  }
+
+  void _limpiarControladores() {
+    _ctrlAvance.clear();
+    _ctrlFondoHasta.clear();
+    _ctrlRecuperacion.clear();
+    _ctrlPerdida.clear();
   }
 
   void _enviarCorrida() {
     final c = _corridas[_corridaActual];
-    c.perforadoIngresado = double.tryParse(_ctrlPerforado.text.replaceAll(',', '.'));
-    c.testigoIngresado = double.tryParse(_ctrlTestigo.text.replaceAll(',', '.'));
-    c.contraIngresada = double.tryParse(_ctrlContra.text.replaceAll(',', '.'));
+    c.avanceIngresado = double.tryParse(_ctrlAvance.text.replaceAll(',', '.'));
+    c.fondoHastaIngresado = double.tryParse(_ctrlFondoHasta.text.replaceAll(',', '.'));
+    c.recuperacionIngresada = double.tryParse(_ctrlRecuperacion.text.replaceAll(',', '.'));
+    c.perdidaIngresada = double.tryParse(_ctrlPerdida.text.replaceAll(',', '.'));
     setState(() => _corridaEnviada = true);
   }
 
@@ -152,9 +73,7 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
       setState(() {
         _corridaActual++;
         _corridaEnviada = false;
-        _ctrlPerforado.clear();
-        _ctrlTestigo.clear();
-        _ctrlContra.clear();
+        _limpiarControladores();
       });
     } else {
       setState(() => _etapa = 2);
@@ -162,29 +81,31 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
   }
 
   double get _puntajeTotal {
+    int totalPreguntas = _corridas.length * 4; // 4 cálculos por corrida
     int correctas = 0;
-    int total = 0;
     for (final c in _corridas) {
-      if (c.perforadoCorrecto) correctas++;
-      if (c.testiguoCorrecto) correctas++;
-      total += 2;
+      if (c.isAvanceCorrecto) correctas++;
+      if (c.isFondoHastaCorrecto) correctas++;
+      if (c.isRecuperacionCorrecta) correctas++;
+      if (c.isPerdidaCorrecta) correctas++;
     }
-    return total > 0 ? (correctas / total) * 100 : 0;
+    return totalPreguntas > 0 ? (correctas / totalPreguntas) * 100 : 0.0;
   }
 
   String get _calificacion {
     final p = _puntajeTotal;
-    if (p >= 90) return "⭐ Excelente";
-    if (p >= 75) return "👍 Bueno";
-    if (p >= 60) return "📖 Regular";
-    return "🔁 Necesitas practicar más";
+    if (p >= 95) return "⭐ Nivel Supervisor Senior";
+    if (p >= 85) return "👍 Nivel Controlador Aprobado";
+    if (p >= 70) return "📖 En Práctica (Requiere Supervisión)";
+    return "🔁 Necesitas Reforzar Conceptos";
   }
 
   @override
   void dispose() {
-    _ctrlPerforado.dispose();
-    _ctrlTestigo.dispose();
-    _ctrlContra.dispose();
+    _ctrlAvance.dispose();
+    _ctrlFondoHasta.dispose();
+    _ctrlRecuperacion.dispose();
+    _ctrlPerdida.dispose();
     super.dispose();
   }
 
@@ -211,6 +132,16 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
           style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 18),
         ),
         actions: [
+          if (_etapa == 1)
+            IconButton(
+              icon: Icon(Icons.calculate_outlined, color: colors.azulOscuro),
+              tooltip: "Calculadora de Bolsillo",
+              onPressed: () {
+                setState(() {
+                  _showCalculator = !_showCalculator;
+                });
+              },
+            ),
           if (_etapa > 0)
             TextButton.icon(
               icon: Icon(Icons.refresh, size: 16, color: colors.azul),
@@ -227,11 +158,46 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
           ),
         ],
       ),
-      body: _etapa == 0
-          ? _buildConfiguracion(colors)
-          : _etapa == 1
-              ? _buildCorridas(colors)
-              : _buildEvaluacion(colors),
+      floatingActionButton: _etapa == 1
+          ? FloatingActionButton(
+              backgroundColor: const Color(0xFF4F46E5),
+              foregroundColor: Colors.white,
+              tooltip: "Calculadora de Bolsillo",
+              onPressed: () {
+                setState(() {
+                  _showCalculator = !_showCalculator;
+                });
+              },
+              child: const Icon(Icons.calculate),
+            )
+          : null,
+      body: Stack(
+        children: [
+          _etapa == 0
+              ? _buildConfiguracion(colors)
+              : _etapa == 1
+                  ? _buildCorridas(colors)
+                  : _buildEvaluacion(colors),
+          if (_showCalculator)
+            Positioned(
+              left: _calcPosition.dx,
+              top: _calcPosition.dy,
+              width: 250,
+              child: CalculadoraBolsillo(
+                onDrag: (delta) {
+                  setState(() {
+                    _calcPosition += delta;
+                  });
+                },
+                onClose: () {
+                  setState(() {
+                    _showCalculator = false;
+                  });
+                },
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -247,8 +213,8 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.deepPurple.shade700, Colors.deepPurple.shade400],
+              gradient: const LinearGradient(
+                colors: [Color(0xFF6366F1), Color(0xFF4F46E5)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -257,15 +223,15 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("🎯", style: TextStyle(fontSize: 40)),
+                Text("⛏️", style: TextStyle(fontSize: 40)),
                 SizedBox(height: 8),
                 Text(
-                  "Simulacro de Turno Completo",
+                  "Auditoría Operacional en Terreno",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 SizedBox(height: 6),
                 Text(
-                  "Practica las corridas reales: ingresa los metros perforados, el testigo recuperado y la contra. Al finalizar recibirás una evaluación de tu precisión.",
+                  "Enfréntate a un turno real de perforación diamantina. Calcula el Avance, Fondo, % de Recuperación y Pérdidas de testigo de cada corrida a partir de las lecturas físicas del pozo y la bandeja.",
                   style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
                 ),
               ],
@@ -273,15 +239,14 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
           ),
           const SizedBox(height: 24),
 
-          // Selector de dificultad
-          Text("Elige la dificultad:", style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 16)),
+          Text("Elige la dificultad del Turno:", style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 16)),
           const SizedBox(height: 12),
           ...['Básico', 'Intermedio', 'Avanzado'].map((d) {
             final icons = ['🟢', '🟡', '🔴'];
             final descs = [
-              'Sin adición de barras. Recuperación siempre alta (85–100%). Ideal para empezar.',
-              'Con 1 adición de barra a mitad del turno. Recuperación variable (70–95%).',
-              'Múltiples eventos. Recuperación baja posible (50–90%). Para controladores avanzados.',
+              '3 corridas sin adición de barras. Alta recuperación de testigo (92-100%). Ideal para comenzar.',
+              '4 corridas con adición de barras a mitad del turno. Pérdidas moderadas de testigo.',
+              '5 corridas con adición de barras, tramos diaclasados de baja recuperación y alta variación litológica.',
             ];
             final idx = ['Básico', 'Intermedio', 'Avanzado'].indexOf(d);
             final isSelected = _dificultad == d;
@@ -291,10 +256,10 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.deepPurple.withOpacity(0.08) : colors.superficie,
+                  color: isSelected ? const Color(0xFF6366F1).withOpacity(0.08) : colors.superficie,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: isSelected ? Colors.deepPurple : colors.bordeSuave,
+                    color: isSelected ? const Color(0xFF4F46E5) : colors.bordeSuave,
                     width: isSelected ? 2 : 1,
                   ),
                 ),
@@ -307,30 +272,30 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(d, style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 15)),
-                          Text(descs[idx], style: TextStyle(color: colors.grisTexto, fontSize: 12, height: 1.3)),
+                          const SizedBox(height: 4),
+                          Text(descs[idx], style: TextStyle(color: colors.grisTexto, fontSize: 11, height: 1.3)),
                         ],
                       ),
                     ),
-                    if (isSelected) const Icon(Icons.check_circle, color: Colors.deepPurple, size: 22),
                   ],
                 ),
               ),
             );
           }),
 
-          const SizedBox(height: 28),
+          const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton.icon(
+            child: ElevatedButton(
               onPressed: _iniciarSimulacro,
-              icon: const Icon(Icons.play_arrow, size: 22),
-              label: const Text("Comenzar Simulacro", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
+                backgroundColor: const Color(0xFF4F46E5),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 2,
               ),
+              child: const Text("Iniciar Turno de Perforación ➡️", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ),
           ),
         ],
@@ -338,17 +303,18 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
     );
   }
 
-  // ─── PANTALLA DE CORRIDAS ─────────────────────────────────────────────────
+  // ─── PANTALLA DE CORRIDAS (EJERCICIOS) ────────────────────────────────────
   Widget _buildCorridas(AppColors colors) {
     final c = _corridas[_corridaActual];
 
     return Column(
       children: [
-        // Progreso
+        // Línea de progreso superior
         LinearProgressIndicator(
-          value: (_corridaActual + (_corridaEnviada ? 1 : 0)) / _corridas.length,
+          value: (_corridaActual + (_corridaEnviada ? 1 : 0.5)) / _corridas.length,
           backgroundColor: colors.bordeSuave,
-          valueColor: const AlwaysStoppedAnimation<Color>(Colors.deepPurple),
+          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF4F46E5)),
+          minHeight: 5,
         ),
         Expanded(
           child: SingleChildScrollView(
@@ -356,105 +322,170 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Datos del turno (contexto)
+                // Ficha del Pozo Activo (Datos del Turno)
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple.withOpacity(0.07),
+                    color: const Color(0xFF4F46E5).withOpacity(0.06),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.deepPurple.withOpacity(0.3)),
+                    border: Border.all(color: const Color(0xFF4F46E5).withOpacity(0.2)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("📋 Datos del Turno",
-                          style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13)),
-                      const SizedBox(height: 6),
-                      _datoRow("PM (Punto Muerto)", "${_pm.toStringAsFixed(2)} m", colors),
-                      _datoRow("Barras en sarta", "$_nBarras barras × 3.00 m", colors),
-                      _datoRow("Fondo inicial del turno", "${_fondoInicial.toStringAsFixed(2)} m", colors),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("📋 Configuración del Pozo",
+                              style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13)),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              "Diámetro ${_config.diametro}",
+                              style: const TextStyle(color: Colors.amber, fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      _datoRow("Punto Muerto (PM)", "${_config.pm.toStringAsFixed(2)} m", colors),
+                      _datoRow("Barras en Sarta (Iniciales)", "${_config.nBarrasIniciales} barras de ${_config.largoBarra.toStringAsFixed(2)}m", colors),
+                      _datoRow("Largo del Tubo Sacamuestras", "${_config.largoTuboSacamuestras.toStringAsFixed(2)} m", colors),
+                      _datoRow("Fondo Inicial del Turno", "${_config.fondoInicial.toStringAsFixed(2)} m", colors),
                     ],
                   ),
                 ),
                 const SizedBox(height: 14),
 
-                // Corrida actual
+                // Corrida Actual y su Contexto
                 Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
-                        color: Colors.deepPurple,
+                        color: const Color(0xFF4F46E5),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        "Corrida ${c.numero} / ${_corridas.length}",
+                        "CORRIDA ${c.numero} / ${_corridas.length}",
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
                       ),
                     ),
-                    if (c.conAdicion) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.orange.withOpacity(0.5)),
-                        ),
-                        child: const Text("⚠️ Se agregó una barra en esta corrida",
-                            style: TextStyle(color: Colors.orange, fontSize: 11, fontWeight: FontWeight.bold)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "Evento: ${c.eventoDescripcion}",
+                        style: TextStyle(color: colors.grisTexto, fontSize: 11, fontStyle: FontStyle.italic),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ]
+                    ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
 
-                // Datos que el controlador ve (de terreno)
+                // PANEL 1: OBSERVACIONES DE TERRENO (Lo que lee el operador)
                 Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: colors.superficie,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(color: colors.bordeSuave),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: const Offset(0, 2)),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("🔎 Información disponible en terreno",
+                      Text("🔎 Mediciones Físicas Observadas en Terreno",
                           style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13)),
                       const Divider(height: 14),
-                      _datoRow("Fondo anterior (Desde)", "${c.fondoAnterior.toStringAsFixed(2)} m", colors),
-                      if (c.conAdicion)
-                        _datoRow("Barra agregada", "3.00 m adicionales", colors),
+                      
+                      // Lectura de la Sonda / Contra
+                      Row(
+                        children: [
+                          Icon(Icons.precision_manufacturing_outlined, color: colors.azul, size: 20),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(color: colors.azulOscuro, fontSize: 13),
+                                children: [
+                                  const TextSpan(text: "Contra inicial sobre la mesa: "),
+                                  TextSpan(text: "${c.contraAnterior.toStringAsFixed(2)} m\n", style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  TextSpan(
+                                    text: c.conAdicionBarra 
+                                        ? "⚠️ Se roscó una barra adicional de 3.00 m en la sarta.\n" 
+                                        : "No se añadieron barras adicionales en esta corrida.\n",
+                                    style: TextStyle(
+                                      color: c.conAdicionBarra ? Colors.orange : Colors.grey,
+                                      fontSize: 11,
+                                      fontWeight: c.conAdicionBarra ? FontWeight.bold : FontWeight.normal
+                                    ),
+                                  ),
+                                  const TextSpan(text: "Contra final leída: "),
+                                  TextSpan(text: "${c.contraNueva.toStringAsFixed(2)} m", style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      
+                      // Lectura del Testigo / Bandeja
+                      Row(
+                        children: [
+                          const Icon(Icons.layers, color: Colors.teal, size: 20),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(color: colors.azulOscuro, fontSize: 13),
+                                children: [
+                                  const TextSpan(text: "Testigo físico medido en la bandeja: "),
+                                  TextSpan(text: "${c.testigoMedidoBandeja.toStringAsFixed(2)} m", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 14),
 
-                // Inputs del usuario
+                // PANEL 2: PLANILLA DE REGISTRO
                 if (!_corridaEnviada) ...[
-                  Text("✏️ Registra la corrida:",
+                  Text("✏️ Registra tus cálculos en la planilla:",
                       style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 14)),
                   const SizedBox(height: 10),
-                  _inputField("Metros perforados (Perforado)", _ctrlPerforado, colors),
-                  _inputField("Testigo recuperado (m)", _ctrlTestigo, colors),
-                  _inputField("Contra nueva (m)", _ctrlContra, colors),
+                  _inputField("1. Avance Perforado (m)", _ctrlAvance, colors),
+                  _inputField("2. Fondo Hasta (m)", _ctrlFondoHasta, colors),
+                  _inputField("3. % Recuperación (ej: 95.2)", _ctrlRecuperacion, colors),
+                  _inputField("4. Pérdida de Testigo (m)", _ctrlPerdida, colors),
                   const SizedBox(height: 14),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: _enviarCorrida,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
+                        backgroundColor: const Color(0xFF4F46E5),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: const Text("Verificar Corrida", style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: const Text("Verificar carrera", style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ] else ...[
-                  // Resultado de la corrida
+                  // Retroalimentación detallada y paso a paso
                   _buildResultadoCorrida(c, colors),
                   const SizedBox(height: 14),
                   SizedBox(
@@ -462,12 +493,12 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
                     child: ElevatedButton(
                       onPressed: _siguienteCorrida,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _corridaActual < _corridas.length - 1 ? Colors.deepPurple : Colors.green,
+                        backgroundColor: _corridaActual < _corridas.length - 1 ? const Color(0xFF4F46E5) : Colors.green.shade600,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: Text(_corridaActual < _corridas.length - 1 ? "Siguiente Corrida ➡️" : "Ver Evaluación Final"),
+                      child: Text(_corridaActual < _corridas.length - 1 ? "Siguiente Corrida ➡️" : "Ver Evaluación de Turno 📊"),
                     ),
                   ),
                 ],
@@ -479,60 +510,142 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
     );
   }
 
-  Widget _buildResultadoCorrida(_Corrida c, AppColors colors) {
+  Widget _buildResultadoCorrida(CorridaSimulada c, AppColors colors) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: colors.superficieSuave,
+        color: colors.superficie,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: colors.bordeSuave),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("📊 Resultado de la Corrida ${c.numero}",
-              style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 14)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("📊 Evaluación y Desglose de Fórmulas",
+                  style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 14)),
+              Icon(
+                c.todoCorrecto ? Icons.verified : Icons.warning_amber_rounded,
+                color: c.todoCorrecto ? Colors.green : Colors.orange,
+              )
+            ],
+          ),
           const Divider(height: 14),
-          _resultRow("Metros perforados", "${c.metrosPerforados} m",
-              "${c.perforadoIngresado?.toStringAsFixed(2) ?? '—'} m", c.perforadoCorrecto, colors),
-          _resultRow("Testigo recuperado", "${c.testigoReal} m",
-              "${c.testigoIngresado?.toStringAsFixed(2) ?? '—'} m", c.testiguoCorrecto, colors),
-          _resultRow("% Recuperación", "${c.recuperacionReal.toStringAsFixed(1)}%",
-              "${c.recuperacionIngresada?.toStringAsFixed(1) ?? '—'}%",
-              c.recuperacionIngresada != null && (c.recuperacionIngresada! - c.recuperacionReal).abs() <= 1.0, colors),
-          _resultRow("Fondo nuevo", "${c.fondoNuevo.toStringAsFixed(2)} m", "—", true, colors),
+
+          // 1. Avance Perforado
+          _resultItem(
+            "1. Avance Perforado (m)",
+            c.avanceEsperado,
+            c.avanceIngresado,
+            c.isAvanceCorrecto,
+            colors,
+            formula: c.conAdicionBarra
+                ? r"\text{Avance} = (C_{\text{ant}} + 3.00) - C_{\text{nueva}}"
+                : r"\text{Avance} = C_{\text{ant}} - C_{\text{nueva}}",
+            explicacion: c.conAdicionBarra
+                ? "Con adición: (${c.contraAnterior.toStringAsFixed(2)} + 3.00) - ${c.contraNueva.toStringAsFixed(2)} = ${c.avanceEsperado.toStringAsFixed(2)} m"
+                : "Sin adición: ${c.contraAnterior.toStringAsFixed(2)} - ${c.contraNueva.toStringAsFixed(2)} = ${c.avanceEsperado.toStringAsFixed(2)} m",
+          ),
+
+          // 2. Fondo Hasta
+          _resultItem(
+            "2. Fondo Hasta (m)",
+            c.fondoHastaEsperado,
+            c.fondoHastaIngresado,
+            c.isFondoHastaCorrecto,
+            colors,
+            formula: r"\text{Fondo Hasta} = \text{Fondo}_{\text{ant}} + \text{Avance}",
+            explicacion: "${c.fondoAnterior.toStringAsFixed(2)} + ${c.avanceEsperado.toStringAsFixed(2)} = ${c.fondoHastaEsperado.toStringAsFixed(2)} m",
+          ),
+
+          // 3. % Recuperación
+          _resultItem(
+            "3. Porcentaje de Recuperación",
+            c.recuperacionEsperada,
+            c.recuperacionIngresada,
+            c.isRecuperacionCorrecta,
+            colors,
+            unit: "%",
+            formula: r"\%\text{Rec} = \frac{\text{Testigo Medido}}{\text{Avance}} \times 100",
+            explicacion: "(${c.testigoMedidoBandeja.toStringAsFixed(2)} / ${c.avanceEsperado.toStringAsFixed(2)}) * 100 = ${c.recuperacionEsperada.toStringAsFixed(1)}%",
+          ),
+
+          // 4. Pérdida
+          _resultItem(
+            "4. Pérdida de Testigo (m)",
+            c.perdidaEsperada,
+            c.perdidaIngresada,
+            c.isPerdidaCorrecta,
+            colors,
+            formula: r"\text{Pérdida} = \text{Avance} - \text{Testigo Medido}",
+            explicacion: "${c.avanceEsperado.toStringAsFixed(2)} - ${c.testigoMedidoBandeja.toStringAsFixed(2)} = ${c.perdidaEsperada.toStringAsFixed(2)} m (Taco de madera rotulado)",
+          ),
         ],
       ),
     );
   }
 
-  Widget _resultRow(String label, String correcto, String ingresado, bool ok, AppColors colors) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
+  Widget _resultItem(
+    String titulo,
+    double correcto,
+    double? ingresado,
+    bool esCorrecto,
+    AppColors colors, {
+    String unit = " m",
+    required String formula,
+    required String explicacion,
+  }) {
+    return ExpansionTile(
+      title: Row(
         children: [
-          Icon(ok ? Icons.check_circle : Icons.cancel, color: ok ? Colors.green : Colors.red, size: 18),
+          Icon(esCorrecto ? Icons.check_circle : Icons.cancel, color: esCorrecto ? Colors.green : Colors.red, size: 18),
           const SizedBox(width: 8),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(label, style: TextStyle(color: colors.grisTexto, fontSize: 11)),
-                Row(
-                  children: [
-                    Text("Correcto: ", style: TextStyle(color: Colors.green.shade700, fontSize: 12, fontWeight: FontWeight.bold)),
-                    Text(correcto, style: TextStyle(color: colors.azulOscuro, fontSize: 12)),
-                    if (ingresado != "—") ...[
-                      Text("  |  Tu respuesta: ", style: TextStyle(color: colors.grisSecundario, fontSize: 12)),
-                      Text(ingresado, style: TextStyle(color: ok ? Colors.green.shade700 : Colors.red.shade700, fontWeight: FontWeight.bold, fontSize: 12)),
-                    ],
-                  ],
-                ),
-              ],
+            child: Text(
+              titulo,
+              style: TextStyle(
+                color: colors.azulOscuro,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
             ),
           ),
         ],
       ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(left: 26, top: 2),
+        child: Text(
+          "Correcto: $correcto$unit  |  Respuesta: ${ingresado?.toString() ?? '—'}$unit",
+          style: TextStyle(color: esCorrecto ? Colors.green.shade700 : Colors.red.shade700, fontSize: 11),
+        ),
+      ),
+      childrenPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Fórmula aplicada:",
+          style: TextStyle(color: colors.grisSecundario, fontSize: 10, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          width: double.infinity,
+          decoration: BoxDecoration(color: colors.fondo, borderRadius: BorderRadius.circular(8)),
+          child: LatexFormula(latex: formula, color: colors.azulOscuro, fontSize: 14),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          "Cálculo paso a paso:",
+          style: TextStyle(color: colors.grisSecundario, fontSize: 10, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          explicacion,
+          style: TextStyle(color: colors.azulOscuro, fontSize: 11, fontFamily: 'monospace'),
+        ),
+      ],
     );
   }
 
@@ -540,19 +653,25 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
   Widget _buildEvaluacion(AppColors colors) {
     final puntaje = _puntajeTotal;
     final calif = _calificacion;
-    final colorPuntaje = puntaje >= 90 ? Colors.green : puntaje >= 75 ? Colors.blue : puntaje >= 60 ? Colors.orange : Colors.red;
+    final colorPuntaje = puntaje >= 90 
+        ? Colors.green.shade600 
+        : puntaje >= 75 
+            ? Colors.blue.shade600 
+            : puntaje >= 60 
+                ? Colors.orange.shade600 
+                : Colors.red.shade600;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          // Puntaje grande
+          // Tarjeta de Puntaje Total
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [colorPuntaje.withOpacity(0.8), colorPuntaje.withOpacity(0.5)],
+                colors: [colorPuntaje, colorPuntaje.withOpacity(0.7)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -560,19 +679,21 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
             ),
             child: Column(
               children: [
-                Text(calif.split(' ').first, style: const TextStyle(fontSize: 52)),
+                const Icon(Icons.emoji_events_outlined, size: 52, color: Colors.white),
                 const SizedBox(height: 8),
                 Text(
                   "${puntaje.toStringAsFixed(0)}% de precisión",
                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  calif.substring(calif.indexOf(' ') + 1),
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                  calif,
+                  style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  "Dificultad: $_dificultad  •  ${_corridas.length} corridas",
+                  "Dificultad: $_dificultad  •  ${_corridas.length} corridas auditadas",
                   style: const TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ],
@@ -580,41 +701,52 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
           ),
           const SizedBox(height: 20),
 
-          // Detalle por corrida
-          Text("Detalle por corrida:",
+          // Planilla Resumen del Turno
+          Text("Resumen de la Planilla de Turno:",
               style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 15)),
           const SizedBox(height: 10),
-          ..._corridas.map((c) {
-            final ok = c.perforadoCorrecto && c.testiguoCorrecto;
-            return Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: colors.superficie,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: ok ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.3)),
-              ),
-              child: Row(
-                children: [
-                  Icon(ok ? Icons.check_circle : Icons.cancel, color: ok ? Colors.green : Colors.red),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _corridas.length,
+            itemBuilder: (context, index) {
+              final c = _corridas[index];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: colors.superficie,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: c.todoCorrecto ? Colors.green.withOpacity(0.3) : Colors.orange.withOpacity(0.3)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Corrida ${c.numero} — ${c.fondoAnterior.toStringAsFixed(2)} m → ${c.fondoNuevo.toStringAsFixed(2)} m",
-                            style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13)),
                         Text(
-                          "Perforado: ${c.metrosPerforados} m  |  Testigo: ${c.testigoReal} m  |  Rec: ${c.recuperacionReal.toStringAsFixed(1)}%",
-                          style: TextStyle(color: colors.grisTexto, fontSize: 11),
+                          "Corrida ${c.numero}: ${c.fondoAnterior.toStringAsFixed(2)}m ➡️ ${c.fondoHastaEsperado.toStringAsFixed(2)}m",
+                          style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13),
                         ),
+                        Icon(
+                          c.todoCorrecto ? Icons.check_circle : Icons.warning_amber_rounded,
+                          color: c.todoCorrecto ? Colors.green : Colors.orange,
+                          size: 18,
+                        )
                       ],
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                    const Divider(height: 8),
+                    Text(
+                      "Avance Perforado: ${c.avanceEsperado}m | Testigo: ${c.testigoMedidoBandeja}m | Rec: ${c.recuperacionEsperada}%",
+                      style: TextStyle(color: colors.grisTexto, fontSize: 11),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
 
           const SizedBox(height: 20),
           Row(
@@ -622,15 +754,13 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => setState(() {
-                    _etapa = 0;
-                    _corridaActual = 0;
-                    _corridaEnviada = false;
+                    _etrap(_etapa = 0);
                   }),
                   icon: const Icon(Icons.refresh),
-                  label: const Text("Nuevo Simulacro"),
+                  label: const Text("Nuevo Turno"),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.deepPurple,
-                    side: const BorderSide(color: Colors.deepPurple),
+                    foregroundColor: const Color(0xFF4F46E5),
+                    side: const BorderSide(color: Color(0xFF4F46E5)),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
@@ -641,9 +771,9 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () => widget.onNavigate('calculadoras'),
                   icon: const Icon(Icons.calculate),
-                  label: const Text("Practicar Más"),
+                  label: const Text("Calculadoras"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: const Color(0xFF4F46E5),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -657,14 +787,22 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
     );
   }
 
+  void _etrap(int val) {
+    setState(() {
+      _etapa = val;
+      _corridaActual = 0;
+      _corridaEnviada = false;
+    });
+  }
+
   Widget _datoRow(String label, String value, AppColors colors) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: colors.grisTexto, fontSize: 12)),
-          Text(value, style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 12)),
+          Text(label, style: TextStyle(color: colors.grisTexto, fontSize: 11)),
+          Text(value, style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 11)),
         ],
       ),
     );
@@ -684,7 +822,7 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
           fillColor: colors.superficie,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: colors.bordeSuave)),
           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: colors.bordeSuave)),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.deepPurple, width: 2)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF4F46E5), width: 2)),
           contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         ),
       ),

@@ -230,7 +230,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: categoria,
+                          initialValue: categoria,
                           dropdownColor: colors.superficie,
                           borderRadius: BorderRadius.circular(16),
                           icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.azul),
@@ -246,7 +246,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                       const SizedBox(width: 8),
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: prioridad,
+                          initialValue: prioridad,
                           dropdownColor: colors.superficie,
                           borderRadius: BorderRadius.circular(16),
                           icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.azul),
@@ -425,7 +425,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: categoria,
+                          initialValue: categoria,
                           dropdownColor: colors.superficie,
                           borderRadius: BorderRadius.circular(16),
                           icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.azul),
@@ -441,7 +441,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                       const SizedBox(width: 8),
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: prioridad,
+                          initialValue: prioridad,
                           dropdownColor: colors.superficie,
                           borderRadius: BorderRadius.circular(16),
                           icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.azul),
@@ -577,7 +577,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                   Text("Repetir Alarma (Replicar días):", style: TextStyle(color: colors.azulOscuro, fontSize: 13, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<String>(
-                    value: repeticion,
+                    initialValue: repeticion,
                     dropdownColor: colors.superficie,
                     borderRadius: BorderRadius.circular(16),
                     icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.azul),
@@ -747,7 +747,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
           children: [
             Container(
               padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(color: Colors.red.withOpacity(0.15), shape: BoxShape.circle),
+              decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.15), shape: BoxShape.circle),
               child: const Icon(Icons.notifications_active, color: Colors.red, size: 40),
             ),
             const SizedBox(height: 12),
@@ -773,7 +773,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
             const SizedBox(height: 14),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(color: Colors.orange.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
+              decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
               child: Text(
                 "Perfil: ${widget.perfilActivo} | Cat: ${item['categoria']} | $repStr",
                 style: TextStyle(color: Colors.orange.shade900, fontSize: 10.5, fontWeight: FontWeight.bold),
@@ -961,9 +961,9 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                                     child: Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: pColor.withOpacity(0.1),
+                                        color: pColor.withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(14),
-                                        border: Border.all(color: pColor.withOpacity(0.3)),
+                                        border: Border.all(color: pColor.withValues(alpha: 0.3)),
                                       ),
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1047,10 +1047,10 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                             margin: const EdgeInsets.only(bottom: 10),
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
-                              color: isSonando ? Colors.red.withOpacity(0.08) : colors.superficie,
+                              color: isSonando ? Colors.red.withValues(alpha: 0.08) : colors.superficie,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(color: isSonando ? Colors.red : colors.bordeSuave, width: isSonando ? 2 : 1),
-                              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 6)],
+                              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 6)],
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1060,7 +1060,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
                                     Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
-                                        color: item['prioridad'] == 'Alta' ? Colors.red.withOpacity(0.12) : colors.azul.withOpacity(0.12),
+                                        color: item['prioridad'] == 'Alta' ? Colors.red.withValues(alpha: 0.12) : colors.azul.withValues(alpha: 0.12),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Text(

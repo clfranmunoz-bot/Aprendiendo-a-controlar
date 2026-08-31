@@ -4,7 +4,6 @@ import 'package:aprender_a_controlar/utils/app_colors.dart';
 import 'package:aprender_a_controlar/utils/secciones_data.dart';
 import 'package:aprender_a_controlar/models/seccion.dart';
 import 'package:aprender_a_controlar/widgets/drawer_menu.dart';
-import 'package:aprender_a_controlar/widgets/latex_formula.dart';
 
 class DetallesScreen extends StatefulWidget {
   final String seccionId;
@@ -69,10 +68,10 @@ class _DetallesScreenState extends State<DetallesScreen> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               decoration: BoxDecoration(
-                color: accentColor.withOpacity(0.12),
+                color: accentColor.withValues(alpha: 0.12),
                 border: Border(
                   bottom: BorderSide(
-                    color: accentColor.withOpacity(0.2),
+                    color: accentColor.withValues(alpha: 0.2),
                     width: 1.5,
                   ),
                 ),
@@ -81,7 +80,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                 children: [
                   CircleAvatar(
                     radius: 22,
-                    backgroundColor: accentColor.withOpacity(0.2),
+                    backgroundColor: accentColor.withValues(alpha: 0.2),
                     child: Text(
                       seccion.emoji,
                       style: const TextStyle(fontSize: 24),
@@ -483,7 +482,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(
-                    color: colors.azul.withOpacity(0.3),
+                    color: colors.azul.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -522,7 +521,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(
-                    color: colors.verde.withOpacity(0.3),
+                    color: colors.verde.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -676,7 +675,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                   // Lined Margin Red Line
                   Container(
                     width: 2.5,
-                    color: Colors.redAccent.withOpacity(0.85),
+                    color: Colors.redAccent.withValues(alpha: 0.85),
                     margin: const EdgeInsets.only(left: 14, right: 12),
                   ),
 
@@ -1168,7 +1167,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: isSelected ? c.withOpacity(0.12) : Colors.transparent,
+                        color: isSelected ? c.withValues(alpha: 0.12) : Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       alignment: Alignment.center,
@@ -1222,7 +1221,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                 border: Border.all(color: colors.bordeSuave, width: 1.2),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.01),
+                    color: Colors.black.withValues(alpha: 0.01),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   )
@@ -1245,7 +1244,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                             // Fondo de cuadrícula técnica sutil
                             Positioned.fill(
                               child: CustomPaint(
-                                painter: _GridPainter(colors.bordeSuave.withOpacity(0.4)),
+                                painter: _GridPainter(colors.bordeSuave.withValues(alpha: 0.4)),
                               ),
                             ),
 
@@ -1292,14 +1291,14 @@ class _DetallesScreenState extends State<DetallesScreen> {
                                       boxShadow: isSelected
                                           ? [
                                               BoxShadow(
-                                                color: mapAccent.withOpacity(0.35),
+                                                color: mapAccent.withValues(alpha: 0.35),
                                                 blurRadius: 8,
                                                 offset: const Offset(0, 4),
                                               )
                                             ]
                                           : [
                                               BoxShadow(
-                                                color: Colors.black.withOpacity(0.02),
+                                                color: Colors.black.withValues(alpha: 0.02),
                                                 blurRadius: 3,
                                                 offset: const Offset(0, 2),
                                               )
@@ -1344,12 +1343,12 @@ class _DetallesScreenState extends State<DetallesScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: colors.superficie.withOpacity(0.9),
+                        color: colors.superficie.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: colors.bordeSuave, width: 0.8),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
+                            color: Colors.black.withValues(alpha: 0.03),
                             blurRadius: 4,
                           )
                         ],
@@ -1390,7 +1389,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                     children: [
                       CircleAvatar(
                         radius: 18,
-                        backgroundColor: mapAccent.withOpacity(0.12),
+                        backgroundColor: mapAccent.withValues(alpha: 0.12),
                         child: Icon(
                           selectedNodeIdx == 0 && _mapSelectedTab == 3 ? Icons.shield : (activeNode['icono'] as IconData),
                           color: mapAccent,
@@ -1429,9 +1428,9 @@ class _DetallesScreenState extends State<DetallesScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.amber.withOpacity(0.08),
+                      color: Colors.amber.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                      border: Border.all(color: Colors.amber.withValues(alpha: 0.3)),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1477,7 +1476,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
         border: Border.all(color: colors.bordeSuave, width: 1.2),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -1491,7 +1490,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: themeColor.withOpacity(0.12),
+                color: themeColor.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
               child: Text(icon, style: const TextStyle(fontSize: 20)),
@@ -1561,10 +1560,10 @@ class _CuadernoGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final minorPaint = Paint()
-      ..color = const Color(0xFFBFDBFE).withOpacity(0.55)
+      ..color = const Color(0xFFBFDBFE).withValues(alpha: 0.55)
       ..strokeWidth = 0.6;
     final majorPaint = Paint()
-      ..color = const Color(0xFF93C5FD).withOpacity(0.72)
+      ..color = const Color(0xFF93C5FD).withValues(alpha: 0.72)
       ..strokeWidth = 0.9;
 
     const step = 18.0;
@@ -1611,12 +1610,12 @@ class _MapConnectorPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
-      ..color = accentColor.withOpacity(0.4)
+      ..color = accentColor.withValues(alpha: 0.4)
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
     final arrowPaint = Paint()
-      ..color = accentColor.withOpacity(0.7)
+      ..color = accentColor.withValues(alpha: 0.7)
       ..style = PaintingStyle.fill;
 
     for (final conn in connections) {
@@ -1673,7 +1672,7 @@ class _MapConnectorPainter extends CustomPainter {
       final rectHeight = textPainter.height + 4;
       final rectPaint = Paint()..color = boxColor;
       final borderPaint = Paint()
-        ..color = accentColor.withOpacity(0.2)
+        ..color = accentColor.withValues(alpha: 0.2)
         ..strokeWidth = 0.8
         ..style = PaintingStyle.stroke;
       

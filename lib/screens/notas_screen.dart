@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:camera/camera.dart';
 import 'package:aprender_a_controlar/models/nota_campo.dart';
@@ -173,7 +172,7 @@ class _NotasScreenState extends State<NotasScreen> {
 
                     // Categoría
                     DropdownButtonFormField<String>(
-                      value: catSel,
+                      initialValue: catSel,
                       dropdownColor: colors.superficie,
                       borderRadius: BorderRadius.circular(16),
                       icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.azul),
@@ -324,8 +323,8 @@ class _NotasScreenState extends State<NotasScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Row(
-          children: const [
+        title: const Row(
+          children: [
             Icon(Icons.mic, color: Colors.redAccent),
             SizedBox(width: 8),
             Text("Dictado por Voz 🎙️"),
@@ -446,6 +445,13 @@ class _NotasScreenState extends State<NotasScreen> {
             fontSize: 18,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home_outlined, color: colors.azulOscuro),
+            tooltip: "Volver al Inicio",
+            onPressed: () => widget.onNavigate('home'),
+          ),
+        ],
       ),
       drawer: DrawerMenu(
         onNavigate: widget.onNavigate,
@@ -473,9 +479,9 @@ class _NotasScreenState extends State<NotasScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.amber.withOpacity(0.12),
+                            color: Colors.amber.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.amber.withOpacity(0.4)),
+                            border: Border.all(color: Colors.amber.withValues(alpha: 0.4)),
                           ),
                           child: Column(
                             children: [
@@ -494,9 +500,9 @@ class _NotasScreenState extends State<NotasScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.12),
+                            color: Colors.green.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.green.withOpacity(0.4)),
+                            border: Border.all(color: Colors.green.withValues(alpha: 0.4)),
                           ),
                           child: Column(
                             children: [
@@ -607,7 +613,7 @@ class _NotasScreenState extends State<NotasScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
         side: BorderSide(
-          color: esRevisado ? Colors.green.withOpacity(0.5) : Colors.amber.withOpacity(0.5),
+          color: esRevisado ? Colors.green.withValues(alpha: 0.5) : Colors.amber.withValues(alpha: 0.5),
           width: 1.2,
         ),
       ),

@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   
   bool _modoEdicionHero = false;
   SeccionApp? _bannerSlot;
-  List<SeccionApp?> _slots = List.filled(4, null);
+  final List<SeccionApp?> _slots = List.filled(4, null);
 
   @override
   void initState() {
@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 40,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: colors.grisSecundario.withOpacity(0.3),
+                          color: colors.grisSecundario.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -265,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14),
                                     side: BorderSide(
-                                      color: colors.bordeSuave.withOpacity(0.5),
+                                      color: colors.bordeSuave.withValues(alpha: 0.5),
                                       width: 1,
                                     ),
                                   ),
@@ -276,7 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(14),
                                     ),
                                     leading: CircleAvatar(
-                                      backgroundColor: colorTheme.withOpacity(0.15),
+                                      backgroundColor: colorTheme.withValues(alpha: 0.15),
                                       child: Text(
                                         seccion.emoji,
                                         style: const TextStyle(fontSize: 18),

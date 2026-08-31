@@ -566,10 +566,10 @@ const List<Pregunta> bancoPreguntas = [
     codigoProcedimiento: "RO-GR-OPI-001",
   ),
   Pregunta(
-    enunciado: "¿Qué color y cantidad de bandas reflectantes deben tener los coligües de señalización de caminos?",
+    enunciado: "¿Qué color y cantidad de bandas reflectantes deben tener las estacas de señalización de caminos?",
     opciones: ["Rojos y amarillos, con dos bandas reflectantes blancas", "Naranjos, con una banda blanca", "Verdes, con bandas amarillas"],
     correcta: 0,
-    retroalimentacion: "Los coligües de delimitación invernal de caminos son de color rojo y amarillo, equipados con dos bandas reflectantes blancas.",
+    retroalimentacion: "Las estacas de delimitación invernal de caminos son de color rojo y amarillo, equipadas con dos bandas reflectantes blancas.",
     codigoProcedimiento: "RO-GR-OPI-001",
   ),
   Pregunta(

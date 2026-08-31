@@ -72,5 +72,7 @@
 	<string>Esta aplicación necesita acceder a la galería para guardar fotos de las bandejas de sondaje.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Esta aplicación necesita guardar fotos de las bandejas de sondaje en tu galería.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Esta aplicación necesita acceso a tu ubicación GPS para posicionarte en el mapa satelital de la faena minera y calcular distancias a pozos de sondaje sin internet.</string>
 </dict>
 </plist>

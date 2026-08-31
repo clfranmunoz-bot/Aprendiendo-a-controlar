@@ -107,7 +107,7 @@ Widget _buildSelectorOption(
         boxShadow: isSelected
             ? [
                 BoxShadow(
-                  color: colors.azul.withOpacity(0.3),
+                  color: colors.azul.withValues(alpha: 0.3),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -179,7 +179,7 @@ Widget buildResultadoCard(
         Text(
           displayExplicacion,
           style: TextStyle(
-            color: displayTexto.withOpacity(0.95),
+            color: displayTexto.withValues(alpha: 0.95),
             fontSize: 12.5,
             height: 1.35,
           ),

@@ -25,12 +25,12 @@ Widget retroWidget(AppColors colors, String retro) {
   return CollapsibleLatexText(
     text: combined.toString(),
     textStyle: TextStyle(
-      color: colors.azulOscuro.withOpacity(0.9),
+      color: colors.azulOscuro.withValues(alpha: 0.9),
       fontSize: 13,
       height: 1.4,
     ),
     latexFontSize: 16,
-    latexColor: colors.azulOscuro.withOpacity(0.9),
+    latexColor: colors.azulOscuro.withValues(alpha: 0.9),
   );
 }
 

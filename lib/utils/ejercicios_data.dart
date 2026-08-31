@@ -1,420 +1,420 @@
 import 'package:aprender_a_controlar/models/ejercicio.dart';
 
 const List<EjercicioPractico> bancoEjercicios = [
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 01",
     enunciado: "¿Cuál es el objetivo principal del procedimiento de control operacional de sondaje diamantino?",
     opciones: ["Describir la metodología del servicio e identificar y controlar riesgos operacionales", "Definir únicamente la mantención de equipos de perforación", "Regular solo el ingreso de vehículos a la plataforma"],
     correcta: 0,
     retroalimentacion: "El procedimiento busca describir cómo se ejecuta el servicio y controlar riesgos que afecten seguridad, salud, medio ambiente y calidad.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 02",
     enunciado: "¿A quién aplica el procedimiento de control operacional de sondajes diamantino?",
     opciones: ["Solo a los supervisores de turno", "A todo el personal y actividades relacionadas con el servicio de control de sondajes MLP", "Solo al perforista y al geólogo"],
     correcta: 1,
     retroalimentacion: "El alcance indicado en el procedimiento abarca a todo el personal y a todas las actividades ligadas al servicio.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 03",
     enunciado: "En zonas de riesgo por sílice, ¿qué protección respiratoria se exige en el procedimiento?",
     opciones: ["Mascarilla de tela reutilizable", "Protector respiratorio de medio rostro con filtros P100", "Solo protector auditivo"],
     correcta: 1,
     retroalimentacion: "El EPP listado en el procedimiento exige protector respiratorio de medio rostro con filtros P100 para este riesgo.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 04",
     enunciado: "¿Cuál es la función del wire line en la perforación diamantina?",
     opciones: ["Extraer el tubo interior desde dentro de la columna de barras", "Cortar el testigo cuando no cabe en la bandeja", "Marcar el metraje de regularización"],
     correcta: 0,
     retroalimentacion: "El wire line es el cable acerado que sostiene al pescante y permite extraer el tubo interior.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 05",
     enunciado: "¿Para qué sirve el pescante según el procedimiento?",
     opciones: ["Para estabilizar la plataforma en terreno blando", "Para sacar el tubo interior porta testigo sin retirar barras", "Para medir el punto muerto del equipo"],
     correcta: 1,
     retroalimentacion: "El pescante está diseñado para extraer el tubo interior porta testigo a través del interior de las barras.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 06",
     enunciado: "¿Qué describe mejor al tricono dentro del procedimiento?",
     opciones: ["Una herramienta de perforación usada para rotación y empuje en el terreno", "Una pieza de rotulación de bandejas", "Un aditivo de perforación"],
     correcta: 0,
     retroalimentacion: "El procedimiento define el tricono como herramienta de perforación para rotación y empuje.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 07",
     enunciado: "Si antes de iniciar la tarea se detecta una desviación y el ARTP no contempla un control específico, ¿qué corresponde hacer?",
     opciones: ["Continuar el trabajo y registrar la desviación al final", "Detener el trabajo y buscar la mejora o control correspondiente", "Esperar a que llegue el siguiente turno"],
     correcta: 1,
     retroalimentacion: "El procedimiento indica detener el trabajo cuando no exista un control especificado y buscar la mejora antes de continuar.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 08",
     enunciado: "Antes de comenzar la operación, el controlador o supervisor debe consultar características del pozo como:",
     opciones: ["Cota, azimut, inclinación y profundidad", "Solo color de roca y clima", "Solo número de trabajadores y turno"],
     correcta: 0,
     retroalimentacion: "El procedimiento exige revisar cota, azimut, inclinación, profundidad y otros datos entregados por el mandante.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 09",
     enunciado: "¿Dónde debe ubicarse normalmente el lugar de trabajo del controlador?",
     opciones: ["Dentro del área de perforación, junto al piano", "En una zona segregada dentro de la plataforma y fuera del área de perforación", "Sobre la máquina sondeadora"],
     correcta: 1,
     retroalimentacion: "El lugar de trabajo debe estar segregado y fuera del área de perforación para evitar exposición a riesgos.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 10",
     enunciado: "Si el controlador necesita ingresar al área de perforación para revisar la muestra, ¿qué debe ocurrir obligatoriamente?",
     opciones: ["Debe solicitar autorización y recibir charla de ingreso a la zona segregada", "Puede ingresar si usa guantes y lentes", "Solo debe informar al geólogo al terminar"],
     correcta: 0,
     retroalimentacion: "El ingreso requiere autorización del perforista y charla de ingreso a la zona segregada.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 11",
     enunciado: "¿Qué debe chequear el controlador respecto del barril y el punto muerto al iniciar la perforación?",
     opciones: ["La medida del barril y del punto muerto, registrando la información en el reporte", "Solo el color del barril", "Solo la velocidad del huinche"],
     correcta: 0,
     retroalimentacion: "El procedimiento señala medir barril y punto muerto y registrar esos datos en el reporte de control.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 12",
     enunciado: "Mientras el perforista extrae y posiciona el tubo interior en el mesón saca testigos, el controlador debe:",
     opciones: ["Permanecer fuera del área segregada y fuera de la línea de fuego hasta ser autorizado", "Acercarse para ordenar la muestra inmediatamente", "Tomar fotografías desde el área del perforista"],
     correcta: 0,
     retroalimentacion: "El controlador no debe exponerse a la línea de fuego y debe esperar la autorización de ingreso.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 13",
     enunciado: "Cuando se trabaja con una corona de diámetro HQ3, ¿qué indica la nota del procedimiento?",
     opciones: ["Usar dos lainas en el tubo interior durante la perforación", "Eliminar el uso de tacos de bloqueo", "Duplicar el largo de las barras"],
     correcta: 0,
     retroalimentacion: "El procedimiento especifica el uso de dos lainas en el tubo interior al trabajar con HQ3.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 14",
     enunciado: "¿Cuál es la forma ideal de medir recuperación y regularizado una vez recibida la muestra?",
     opciones: ["Con la muestra aún en la laina y lo menos alterada posible", "Después de mezclar los trozos en la bandeja", "Solo una vez cerrada la bandeja"],
     correcta: 0,
     retroalimentacion: "La medición ideal se hace con la muestra en la laina, antes del traspaso, para no alterar el testigo.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 15",
     enunciado: "¿Cómo debe realizarse siempre el traspaso del testigo a la bandeja?",
     opciones: ["Desde abajo hacia arriba y de derecha a izquierda", "Desde arriba hacia abajo y de izquierda a derecha", "En el orden que deje más espacio libre"],
     correcta: 1,
     retroalimentacion: "El procedimiento fija ese orden para mantener continuidad y trazabilidad del testigo.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 16",
     enunciado: "Durante el traspaso a bandeja, ¿qué espacio debe dejarse a cada lado de la bandeja?",
     opciones: ["5 cm", "10 cm", "20 cm"],
     correcta: 1,
     retroalimentacion: "Se deben dejar 10 cm a cada lado y espacio suficiente para la ubicación de tacos.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 17",
     enunciado: "Si queda roca molida en la zapata o porta resorte de la barra, el controlador debe:",
     opciones: ["Desecharla para no contaminar la bandeja", "Sacarla totalmente y ubicarla en el lugar de la bandeja que corresponda", "Dejarla dentro de la barra y seguir perforando"],
     correcta: 1,
     retroalimentacion: "La roca molida debe retirarse y ubicarse en la posición correcta para no perder información del tramo.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 18",
     enunciado: "Si el testigo no cabe en una canoa de la bandeja y se genera una fractura inducida, ¿cómo debe marcarse?",
     opciones: ["Con dos // en plumón azul", "Con una X roja en la bandeja", "No se marca si quedó dentro de la misma bandeja"],
     correcta: 0,
     retroalimentacion: "La fractura inducida debe diferenciarse de una natural y el estándar señalado usa dos // en azul.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 19",
     enunciado: "¿Dónde debe registrar manualmente el controlador la información de la operación?",
     opciones: ["Solo en la memoria del equipo", "En el reporte diario y en el cuaderno de registro de cada sonda", "Únicamente en la bandeja porta testigo"],
     correcta: 1,
     retroalimentacion: "El procedimiento pide llevar ambos registros: reporte diario y cuaderno.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 20",
     enunciado: "¿Qué información debe consultar al perforista respecto de las barras?",
     opciones: ["El resto de barra o barra sobrante (contra) y registrarlo", "Solo el color de la barra usada", "La marca comercial del proveedor"],
     correcta: 0,
     retroalimentacion: "El controlador debe consultar la contra y registrarla como parte del control operacional.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 21",
     enunciado: "¿Cómo debe entregarse al supervisor de turno la información de la perforación?",
     opciones: ["Solo verbalmente al cambiar de turno", "En forma verbal y escrita, con hoja limpia y letra legible", "Solo mediante una fotografía de la bandeja"],
     correcta: 1,
     retroalimentacion: "El procedimiento exige respaldo verbal y escrito, con reporte claro y completo.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 22",
     enunciado: "Cuando hay reducción de diámetro, ¿qué acción es correcta?",
     opciones: ["Registrarla en la bandeja, indicar el inicio del cambio y ubicar un taco en la nueva bandeja", "Mantener la misma bandeja sin registrar nada", "Cambiar solamente el número de pozo"],
     correcta: 0,
     retroalimentacion: "Toda reducción de diámetro debe quedar claramente trazada en bandeja y con taco de cambio.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 23",
     enunciado: "¿Cómo deben separarse entre sí las corridas o sacadas de barra para medir recuperación?",
     opciones: ["Con un taco de bloqueo", "Con una línea azul en la bandeja", "Con una esponja en cada extremo"],
     correcta: 0,
     retroalimentacion: "Cada tramo perforado o corrida debe separarse mediante taco de bloqueo.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 24",
     enunciado: "Si en la segunda corrida se recupera más de lo perforado, ¿cuál es la interpretación correcta?",
     opciones: ["No se debe hacer ningún ajuste porque el dato está bien", "Probablemente se recuperó muestra perdida del tramo anterior y se debe ajustar la medición", "Siempre significa que el perforista cambió de diámetro"],
     correcta: 1,
     retroalimentacion: "La recuperación superior al 100% suele deberse a muestra del tramo anterior recuperada en la siguiente carrera.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 25",
     enunciado: "¿Dónde deben registrarse los cambios de taco de bloqueo?",
     opciones: ["En el reporte diario y en el cuaderno", "Solo en la bandeja", "Solo en el libro de asistencia"],
     correcta: 0,
     retroalimentacion: "El procedimiento pide dejar trazabilidad de los cambios de taco tanto en reporte como en cuaderno.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 26",
     enunciado: "¿Cada cuánto avance debe agregarse un taco de regularizado, salvo que el proyecto defina otro soporte?",
     opciones: ["Cada 0,5 m", "Cada 2 m", "Cada 5 m"],
     correcta: 1,
     retroalimentacion: "El estándar general indicado es marcar el avance cada 2 metros.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 27",
     enunciado: "Respecto del taco y la línea de regularizado, ¿qué afirmación es correcta?",
     opciones: ["El taco debe ponerse siempre; la línea con plumón solo cuando el testigo es compacto", "La línea siempre reemplaza al taco", "Ninguno se usa cuando la roca está disgregada"],
     correcta: 0,
     retroalimentacion: "El taco de regularizado siempre debe ir en la bandeja; la línea en el testigo solo si la roca está compacta.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 28",
     enunciado: "¿Qué expresión representa correctamente la recuperación porcentual?",
     opciones: ["Muestra recuperada / muestra perforada × 100", "Muestra perforada / muestra recuperada × 100", "Muestra recuperada + muestra perforada × 100"],
     correcta: 0,
     retroalimentacion: "La fórmula base del procedimiento divide lo recuperado por lo perforado y multiplica por 100.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 29",
     enunciado: "El promedio ponderado de recuperaciones se calcula por cada:",
     opciones: ["Tramo de regularizado", "Tramo de bloqueo", "Cambio de turno"],
     correcta: 1,
     retroalimentacion: "El procedimiento indica que el promedio ponderado se calcula por cada tramo de bloqueo.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 30",
     enunciado: "Si el testigo está entero y compacto, la medición de recuperación debe ser:",
     opciones: ["Continua, eliminando solo espacios reales entre fracturas", "Castigada automáticamente en 25%", "Estimativa según el color de la roca"],
     correcta: 0,
     retroalimentacion: "La muestra entera se considera 100% recuperada, descontando solo vacíos reales.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 31",
     enunciado: "En criterio B1, cuando los trozos casi conforman el cilindro del testigo, ¿qué recuperación aproximada se considera?",
     opciones: ["95%", "75%", "50%"],
     correcta: 0,
     retroalimentacion: "En B1 se considera una recuperación cercana al 95% del largo medido.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 32",
     enunciado: "En criterio B2, si los trozos ocupan cerca del 80% del volumen del testigo, ¿qué castigo corresponde aplicar al largo medido?",
     opciones: ["10%", "25%", "50%"],
     correcta: 1,
     retroalimentacion: "Para B2 se castiga el tramo en un 25% para calcular la recuperación.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 33",
     enunciado: "En criterio B3, si los trozos ocupan solo la mitad de la canaleta, ¿qué castigo corresponde?",
     opciones: ["25%", "50%", "75%"],
     correcta: 1,
     retroalimentacion: "Cuando la ocupación es cercana al 50% del volumen del testigo, el castigo es del 50%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 34",
     enunciado: "Si la muestra molida llena aproximadamente el 100% de la canaleta, ¿qué castigo se aplica al largo medido?",
     opciones: ["10%", "25%", "50%"],
     correcta: 0,
     retroalimentacion: "Para molido que ocupa el equivalente al 100% del volumen del testigo, el castigo indicado es de 10%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 35",
     enunciado: "Si la muestra molida llena aproximadamente el 80% de la canaleta, ¿qué castigo se aplica al largo medido?",
     opciones: ["10%", "25%", "50%"],
     correcta: 1,
     retroalimentacion: "Cuando el molido ocupa cerca del 80% del volumen, el castigo indicado es del 25%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 36",
     enunciado: "¿Cuál es el propósito principal de la regularización del testigo recuperado?",
     opciones: ["Dividir el sondaje en soportes de distancia definidos por el proyecto", "Medir únicamente el peso de las bandejas", "Registrar la asistencia del turno"],
     correcta: 0,
     retroalimentacion: "La regularización se usa para materializar soportes de distancia útiles para el logeo y medición geológica.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 37",
     enunciado: "¿Cuándo se utiliza la compensación de muestra o fórmula de regularización?",
     opciones: ["Solo cuando la roca está completamente intacta", "Cuando el testigo está molido o fracturado y no se distingue claramente la zona de pérdida", "Solo en perforación con tricono"],
     correcta: 1,
     retroalimentacion: "La fórmula compensatoria se usa cuando no es posible identificar con claridad dónde se perdió muestra.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 38",
     enunciado: "Al marcar el metraje en el testigo con línea perpendicular, ¿hacia qué lado de la línea debe quedar escrito el valor?",
     opciones: ["Hacia la izquierda de la línea", "Hacia la derecha de la línea", "En el centro de la línea"],
     correcta: 0,
     retroalimentacion: "El procedimiento indica que el metraje escrito en el testigo debe quedar hacia la izquierda de la línea.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 39",
     enunciado: "En la pestaña inferior de la bandeja, ¿qué secuencia de datos debe registrarse?",
     opciones: ["Número de pozo, desde, hasta y número de bandeja", "Solo fecha, turno y nombre del controlador", "Número de serie del barril, corona y escareador"],
     correcta: 0,
     retroalimentacion: "La rotulación inferior de la bandeja debe mantener esa secuencia para asegurar trazabilidad.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 40",
     enunciado: "Si un tramo se perfora con tricono y no hay muestra recuperada, ¿qué debe hacerse?",
     opciones: ["Registrar metraje inicial y final del tramo y dejar taco indicando la operación", "Asignar 100% de recuperación para cerrar el tramo", "Esperar el siguiente turno para registrar"],
     correcta: 0,
     retroalimentacion: "El tramo perforado con tricono debe quedar explícitamente registrado aunque no haya muestra.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 41",
     enunciado: "Antes de tapar y apilar una bandeja completa, ¿qué verificación exige el procedimiento?",
     opciones: ["Revisar por última vez los datos de la bandeja y dejar registro", "Quitar todos los tacos para ahorrar espacio", "Trasladarla de inmediato sin revisión"],
     correcta: 0,
     retroalimentacion: "Antes del cierre final se debe volver a revisar la información de la bandeja.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 42",
     enunciado: "¿Cuál es la altura máxima permitida al apilar bandejas completas?",
     opciones: ["6 pisos, equivalente a 24 bandejas", "10 pisos, equivalente a 40 bandejas", "12 pisos, equivalente a 48 bandejas"],
     correcta: 1,
     retroalimentacion: "El procedimiento fija una altura máxima de 10 pisos, equivalente a 40 bandejas.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 43",
     enunciado: "Se perforan 1,50 m y se recuperan 1,20 m. ¿Cuál es la recuperación aproximada?",
     opciones: ["70%", "80%", "90%"],
     correcta: 1,
     retroalimentacion: "1,20 / 1,50 × 100 = 80%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 44",
     enunciado: "Se perforan 2,40 m y se recuperan 1,80 m. ¿Cuál es la recuperación?",
     opciones: ["65%", "70%", "75%"],
     correcta: 2,
     retroalimentacion: "1,80 / 2,40 × 100 = 75%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 45",
     enunciado: "Se perforan 0,60 m y se recuperan 0,40 m. ¿Cuál es la recuperación aproximada?",
     opciones: ["66,7%", "75,0%", "83,3%"],
     correcta: 0,
     retroalimentacion: "0,40 / 0,60 × 100 = 66,7% aproximadamente.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 46",
     enunciado: "Se perforan 0,90 m y se recuperan 1,10 m. ¿Qué recuperación aproximada se obtiene?",
     opciones: ["98,0%", "122,2%", "150,0%"],
     correcta: 1,
     retroalimentacion: "1,10 / 0,90 × 100 = 122,2% aproximadamente, lo que obliga a revisar muestra arrastrada.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 47",
     enunciado: "En un tramo de 2,30 m perforados se recuperan 1,70 m. ¿Cuál es la recuperación aproximada?",
     opciones: ["63,9%", "73,9%", "83,9%"],
     correcta: 1,
     retroalimentacion: "1,70 / 2,30 × 100 = 73,9% aproximadamente.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 48",
     enunciado: "Si se perforan 2,20 m y se recuperan 1,20 m, ¿cuál es la recuperación aproximada?",
     opciones: ["44,5%", "54,5%", "64,5%"],
     correcta: 1,
     retroalimentacion: "1,20 / 2,20 × 100 = 54,5% aproximadamente.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 49",
     enunciado: "Si se perforan 1,50 m y se recuperan 1,50 m, ¿cuál es la recuperación?",
     opciones: ["95%", "100%", "105%"],
     correcta: 1,
     retroalimentacion: "Cuando lo recuperado y lo perforado son iguales, la recuperación es 100%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 50",
     enunciado: "Desde taco 236,3 m a 239,2 m se perforan 2,90 m y se recuperan 2,10 m. ¿Cuál es la recuperación aproximada?",
     opciones: ["62,4%", "72,4%", "82,4%"],
     correcta: 1,
     retroalimentacion: "2,10 / 2,90 × 100 = 72,4% aproximadamente.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 51",
     enunciado: "Se perforan 3,00 m y se recuperan 2,25 m. ¿Cuál es la recuperación?",
     opciones: ["65%", "70%", "75%"],
     correcta: 2,
     retroalimentacion: "2,25 / 3,00 × 100 = 75%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 52",
     enunciado: "Si se perforan 1,80 m y se recuperan 0,90 m, ¿qué recuperación se obtiene?",
     opciones: ["40%", "50%", "60%"],
     correcta: 1,
     retroalimentacion: "0,90 / 1,80 × 100 = 50%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 53",
     enunciado: "En un tramo de 2,70 m perforados se recuperan 2,43 m. ¿Cuál es la recuperación aproximada?",
     opciones: ["80%", "85%", "90%"],
     correcta: 2,
     retroalimentacion: "2,43 / 2,70 × 100 = 90%.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 54",
     enunciado: "Para un tramo entre 121,0 m y 123,3 m con 1,70 m recuperados y 2,30 m perforados, ¿a qué distancia desde el taco inicial queda el regularizado 121,5 m usando fórmula compensatoria?",
     opciones: ["0,37 m", "0,50 m", "0,73 m"],
     correcta: 0,
     retroalimentacion: "(121,50 - 121,00) × 1,70 / 2,30 = 0,37 m aproximadamente.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 55",
     enunciado: "En el mismo tramo 121,0 m a 123,3 m con 1,70 m recuperados, ¿a qué distancia desde el taco inicial queda el regularizado 123,0 m?",
     opciones: ["1,11 m", "1,47 m", "1,90 m"],
     correcta: 1,
     retroalimentacion: "(123,0 - 121,0) × 1,70 / 2,30 = 1,47 m aproximadamente desde el taco inicial.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 56",
     enunciado: "Si un taco falso queda en 236,7 m y el tramo hasta 239,2 m tiene 2,50 m perforados y 1,70 m recuperados, ¿a qué distancia desde el taco falso queda el regularizado 238,0 m?",
     opciones: ["0,52 m", "0,88 m", "1,30 m"],
     correcta: 1,
     retroalimentacion: "(238,0 - 236,7) × 1,70 / 2,50 = 0,88 m aproximadamente.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 57",
     enunciado: "Si desde el regularizado 123,0 m al término de bandeja hay 0,12 m medidos, con 2,30 m perforados y 1,70 m recuperados, ¿qué metraje final de bandeja resulta?",
     opciones: ["123,12 m", "123,16 m", "123,23 m"],
     correcta: 1,
     retroalimentacion: "0,12 × 2,30 / 1,70 = 0,16 m; al sumarlo a 123,0 m resulta 123,16 m.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 58",
     enunciado: "Se perforan 2,00 m y se recupera 1,00 m. Si un soporte teórico está a 0,50 m desde el taco inicial, ¿a qué distancia física aproximada queda usando compensación?",
     opciones: ["0,25 m", "0,50 m", "0,75 m"],
     correcta: 0,
     retroalimentacion: "0,50 × 1,00 / 2,00 = 0,25 m.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 59",
     enunciado: "Se perforan 1,50 m y se recuperan 1,20 m. Si el regularizado teórico está a 1,00 m desde el taco inicial, ¿a qué distancia física aproximada debe ubicarse?",
     opciones: ["0,67 m", "0,80 m", "1,20 m"],
     correcta: 1,
     retroalimentacion: "1,00 × 1,20 / 1,50 = 0,80 m.",
   ),
-  const EjercicioPractico(
+  EjercicioPractico(
     titulo: "Banco 60",
     enunciado: "Se perforan 2,40 m y se recuperan 1,80 m. Si el soporte teórico está a 1,20 m desde el taco inicial, ¿qué distancia física aproximada corresponde?",
     opciones: ["0,90 m", "1,20 m", "1,60 m"],

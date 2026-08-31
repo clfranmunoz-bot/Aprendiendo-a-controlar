@@ -167,10 +167,10 @@ class _EjerciciosBancoEstaticoState extends State<EjerciciosBancoEstatico> {
                                   width: 1.2,
                                 );
                               } else {
-                                btnColor = colors.superficieSuave.withOpacity(0.4);
+                                btnColor = colors.superficieSuave.withValues(alpha: 0.4);
                                 textColor = colors.grisSecundario;
                                 border = BorderSide(
-                                  color: colors.bordeSuave.withOpacity(0.4),
+                                  color: colors.bordeSuave.withValues(alpha: 0.4),
                                 );
                               }
                             }
@@ -213,13 +213,13 @@ class _EjerciciosBancoEstaticoState extends State<EjerciciosBancoEstatico> {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: selectedOpt == ex.correcta
-                                    ? colors.verdeClaro.withOpacity(0.7)
-                                    : colors.rojoClaro.withOpacity(0.7),
+                                    ? colors.verdeClaro.withValues(alpha: 0.7)
+                                    : colors.rojoClaro.withValues(alpha: 0.7),
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                   color: selectedOpt == ex.correcta
-                                      ? colors.verde.withOpacity(0.2)
-                                      : colors.rojo.withOpacity(0.2),
+                                      ? colors.verde.withValues(alpha: 0.2)
+                                      : colors.rojo.withValues(alpha: 0.2),
                                 ),
                               ),
                               child: Column(

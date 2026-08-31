@@ -161,6 +161,13 @@ class _FormularioScreenState extends State<FormularioScreen> {
             fontSize: 18,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home_outlined, color: colors.azulOscuro),
+            tooltip: "Volver al Inicio",
+            onPressed: () => widget.onNavigate('home'),
+          ),
+        ],
       ),
       drawer: DrawerMenu(
         onNavigate: widget.onNavigate,
@@ -311,9 +318,9 @@ class _FormularioScreenState extends State<FormularioScreen> {
                               width: double.infinity,
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: colors.verdeClaro.withOpacity(0.4),
+                                color: colors.verdeClaro.withValues(alpha: 0.4),
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: colors.verde.withOpacity(0.3)),
+                                border: Border.all(color: colors.verde.withValues(alpha: 0.3)),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

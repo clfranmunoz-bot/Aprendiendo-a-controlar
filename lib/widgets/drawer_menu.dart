@@ -349,14 +349,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
         decoration: BoxDecoration(
           color: colors.superficie,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: colors.bordeSuave.withOpacity(0.6)),
+          border: Border.all(color: colors.bordeSuave.withValues(alpha: 0.6)),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: colorTheme.withOpacity(0.15),
+                color: colorTheme.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(seccion.emoji, style: const TextStyle(fontSize: 16)),

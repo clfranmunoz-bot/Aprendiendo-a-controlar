@@ -190,7 +190,7 @@ class _EjerciciosEntrenadorTemasState extends State<EjerciciosEntrenadorTemas> {
                   decoration: BoxDecoration(
                     color: colors.azulClaro,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: colors.azul.withOpacity(0.3)),
+                    border: Border.all(color: colors.azul.withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     "$topicName - Nivel ${_trainerDifficulty.name.toUpperCase()}",
@@ -308,10 +308,10 @@ class _EjerciciosEntrenadorTemasState extends State<EjerciciosEntrenadorTemas> {
                       textColor = colors.rojo;
                       border = BorderSide(color: colors.rojo, width: 1.5);
                     } else {
-                      btnColor = colors.superficie.withOpacity(0.5);
+                      btnColor = colors.superficie.withValues(alpha: 0.5);
                       textColor = colors.grisSecundario;
                       border = BorderSide(
-                        color: colors.bordeSuave.withOpacity(0.5),
+                        color: colors.bordeSuave.withValues(alpha: 0.5),
                         width: 1,
                       );
                     }
@@ -372,8 +372,8 @@ class _EjerciciosEntrenadorTemasState extends State<EjerciciosEntrenadorTemas> {
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: _trainerSelectedOption == ex.correcta
-                            ? colors.verde.withOpacity(0.3)
-                            : colors.rojo.withOpacity(0.3),
+                            ? colors.verde.withValues(alpha: 0.3)
+                            : colors.rojo.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Column(

@@ -1,7 +1,12 @@
-import 'url_helper_stub.dart'
-    if (dart.library.html) 'url_helper_web.dart'
-    if (dart.library.io) 'url_helper_mobile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-void launchBrowserUrl(String url) {
-  openUrl(url);
+void launchBrowserUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+  try {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } catch (_) {
+    try {
+      await launchUrl(uri);
+    } catch (_) {}
+  }
 }

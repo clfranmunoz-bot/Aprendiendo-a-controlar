@@ -399,7 +399,7 @@ class _EjerciciosRondaViewState extends State<EjerciciosRondaView> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: _tiempoRestante <= 10
-                  ? colors.rojo.withOpacity(0.1)
+                  ? colors.rojo.withValues(alpha: 0.1)
                   : colors.superficieSuave,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
@@ -454,7 +454,7 @@ class _EjerciciosRondaViewState extends State<EjerciciosRondaView> {
                   decoration: BoxDecoration(
                     color: colors.purpuraClaro,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: colors.purpura.withOpacity(0.3)),
+                    border: Border.all(color: colors.purpura.withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     ex.titulo,
@@ -572,10 +572,10 @@ class _EjerciciosRondaViewState extends State<EjerciciosRondaView> {
                       textColor = colors.rojo;
                       border = BorderSide(color: colors.rojo, width: 1.5);
                     } else {
-                      btnColor = colors.superficie.withOpacity(0.5);
+                      btnColor = colors.superficie.withValues(alpha: 0.5);
                       textColor = colors.grisSecundario;
                       border = BorderSide(
-                        color: colors.bordeSuave.withOpacity(0.5),
+                        color: colors.bordeSuave.withValues(alpha: 0.5),
                         width: 1,
                       );
                     }
@@ -636,8 +636,8 @@ class _EjerciciosRondaViewState extends State<EjerciciosRondaView> {
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: _roundSelectedOption == ex.correcta
-                            ? colors.verde.withOpacity(0.3)
-                            : colors.rojo.withOpacity(0.3),
+                            ? colors.verde.withValues(alpha: 0.3)
+                            : colors.rojo.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Column(

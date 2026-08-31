@@ -127,7 +127,6 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
   // Verification stats
   int _totalVerificaciones = 0;
   String? _feedbackExplicativo;
-  bool _mostrarRetroalimentacion = false;
   bool _explicacionVisible = false;
   bool _descVisible = false;
   String _direccionCambioBarril = "Corto a Largo"; // "Corto a Largo" or "Largo a Corto"
@@ -669,7 +668,6 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
 
     _selectedCorridaIndex = 0;
     _totalVerificaciones = 0;
-    _mostrarRetroalimentacion = false;
     _explicacionVisible = false;
     _feedbackExplicativo = null;
 
@@ -1002,7 +1000,6 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
 
   void _limpiarCuaderno() {
     setState(() {
-      _mostrarRetroalimentacion = false;
       _feedbackExplicativo = null;
       for (int i = 0; i < _cantidadCorridas; i++) {
         final item = _corridas[i];
@@ -1125,19 +1122,6 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
     if (pct >= 80) return "Controlador Operacional Senior";
     if (pct >= 60) return "Controlador de Terreno";
     return "Aprendiz de Sondajes";
-  }
-
-  Widget _buildDataRow(String label, String value, AppColors colors) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: TextStyle(color: colors.grisTexto, fontSize: 12.5)),
-          Text(value, style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 13)),
-        ],
-      ),
-    );
   }
 
   Widget _buildCompactBadge(String label, String val, AppColors colors) {
@@ -1419,7 +1403,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
     } else if (isCorrect == false) {
       cellColor = const Color(0xFFFEE2E2); // Light pastel red
     } else {
-      cellColor = Colors.yellow.withOpacity(0.12); // Yellow highlight for editing
+      cellColor = Colors.yellow.withValues(alpha: 0.12); // Yellow highlight for editing
     }
 
     return Container(
@@ -1448,7 +1432,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
         ),
         decoration: InputDecoration(
           hintText: "?",
-          hintStyle: TextStyle(color: Colors.grey.withOpacity(0.6), fontSize: 13 * _escalaFuente),
+          hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.6), fontSize: 13 * _escalaFuente),
           contentPadding: EdgeInsets.zero,
           filled: true,
           fillColor: cellColor,
@@ -1528,19 +1512,6 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
       onKeyPressed: _onKeyboardKeyPressed,
       onBackspacePressed: _onKeyboardBackspace,
       onDonePressed: _onKeyboardDone,
-    );
-  }
-
-  Widget _buildConfigTable(List<TableRow> rows) {
-    return Table(
-      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {
-        0: FlexColumnWidth(),
-        1: FixedColumnWidth(95),
-        2: FixedColumnWidth(55),
-        3: FixedColumnWidth(95),
-      },
-      children: rows,
     );
   }
 
@@ -1799,9 +1770,9 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           margin: const EdgeInsets.only(bottom: 8),
           decoration: BoxDecoration(
-            color: colors.azul.withOpacity(0.08),
+            color: colors.azul.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: colors.azul.withOpacity(0.2)),
+            border: Border.all(color: colors.azul.withValues(alpha: 0.2)),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1941,7 +1912,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
                   // Lined paper margin line
                   Container(
                     width: 2,
-                    color: Colors.redAccent.withOpacity(0.7),
+                    color: Colors.redAccent.withValues(alpha: 0.7),
                     margin: const EdgeInsets.only(left: 12, right: 8),
                   ),
 
@@ -2060,7 +2031,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
                                                     child: Text(
                                                       _contraInicial.toStringAsFixed(2),
                                                       style: TextStyle(
-                                                          color: const Color(0xFF1E3A8A).withOpacity(0.8),
+                                                          color: const Color(0xFF1E3A8A).withValues(alpha: 0.8),
                                                           fontSize: 11.5 * _escalaFuente,
                                                           fontFamily: "Courier"),
                                                       textAlign: TextAlign.center,
@@ -2079,7 +2050,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
                                         // Merged layout for first 5 columns: Desde, Hasta, Perf., Rec., % Rec
                                         return _buildSheetRow(
                                           backgroundColor: isSelectedRow
-                                              ? const Color(0xFFEFF6FF).withOpacity(0.6)
+                                              ? const Color(0xFFEFF6FF).withValues(alpha: 0.6)
                                               : Colors.transparent,
                                           widths: [colWidth * 5, colWidth, colWidth, colWidth, colWidth],
                                           cells: [
@@ -2186,7 +2157,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
 
                                         return _buildSheetRow(
                                           backgroundColor: isSelectedRow
-                                              ? const Color(0xFFEFF6FF).withOpacity(0.6)
+                                              ? const Color(0xFFEFF6FF).withValues(alpha: 0.6)
                                               : Colors.transparent,
                                           widths: List.generate(9, (_) => colWidth),
                                           cells: [
@@ -2282,7 +2253,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
                                     _buildSheetRow(
                                       isLastRow: true,
                                       backgroundColor: (_selectedCorridaIndex == _cantidadCorridas)
-                                          ? const Color(0xFFEFF6FF).withOpacity(0.6)
+                                          ? const Color(0xFFEFF6FF).withValues(alpha: 0.6)
                                           : Colors.transparent,
                                       widths: List.generate(9, (_) => colWidth),
                                       cells: [
@@ -2406,7 +2377,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha: 0.85),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.grey.shade300, width: 1),
             ),
@@ -2535,10 +2506,10 @@ class _CuadernoGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final minorPaint = Paint()
-      ..color = const Color(0xFFBFDBFE).withOpacity(0.4)
+      ..color = const Color(0xFFBFDBFE).withValues(alpha: 0.4)
       ..strokeWidth = 0.5;
     final majorPaint = Paint()
-      ..color = const Color(0xFF93C5FD).withOpacity(0.55)
+      ..color = const Color(0xFF93C5FD).withValues(alpha: 0.55)
       ..strokeWidth = 0.8;
 
     const step = 16.0;

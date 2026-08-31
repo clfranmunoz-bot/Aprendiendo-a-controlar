@@ -29,4 +29,5 @@ abstract class AppRoutes {
   static const notas                  = 'notas';
   static const simulacro              = 'simulacro';
   static const recordatorios          = 'recordatorios';
+  static const mapaSatelital          = 'mapa_satelital';
 }

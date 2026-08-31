@@ -241,7 +241,7 @@ class _CalculadoraBolsilloState extends State<CalculadoraBolsillo> {
         border: Border.all(color: colors.bordeSuave, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           )
@@ -264,7 +264,7 @@ class _CalculadoraBolsilloState extends State<CalculadoraBolsillo> {
                     Icon(
                       Icons.drag_indicator,
                       size: 16,
-                      color: colors.azul.withOpacity(0.7),
+                      color: colors.azul.withValues(alpha: 0.7),
                     ),
                     const SizedBox(width: 4),
                     Text(

@@ -85,7 +85,7 @@ class _DocumentosObligatoriosScreenState extends State<DocumentosObligatoriosScr
       case "Controles":
         return Colors.green.shade50;
       default:
-        return colors.azul.withOpacity(0.08);
+        return colors.azul.withValues(alpha: 0.08);
     }
   }
 
@@ -118,6 +118,13 @@ class _DocumentosObligatoriosScreenState extends State<DocumentosObligatoriosScr
           icon: Icon(Icons.arrow_back, color: colors.azulOscuro),
           onPressed: widget.onBack ?? () => Navigator.maybePop(context),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home_outlined, color: colors.azulOscuro),
+            tooltip: "Volver al Inicio",
+            onPressed: () => Navigator.popUntil(context, (r) => r.isFirst),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
@@ -143,7 +150,7 @@ class _DocumentosObligatoriosScreenState extends State<DocumentosObligatoriosScr
                   },
                   decoration: InputDecoration(
                     hintText: "Buscar por nombre de documento...",
-                    hintStyle: TextStyle(color: colors.grisTexto.withOpacity(0.6), fontSize: 14),
+                    hintStyle: TextStyle(color: colors.grisTexto.withValues(alpha: 0.6), fontSize: 14),
                     prefixIcon: Icon(Icons.search, color: colors.grisTexto, size: 20),
                     fillColor: colors.fondo,
                     filled: true,
@@ -191,7 +198,7 @@ class _DocumentosObligatoriosScreenState extends State<DocumentosObligatoriosScr
                               });
                             }
                           },
-                          selectedColor: colors.azul.withOpacity(0.12),
+                          selectedColor: colors.azul.withValues(alpha: 0.12),
                           backgroundColor: colors.fondo,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -222,7 +229,7 @@ class _DocumentosObligatoriosScreenState extends State<DocumentosObligatoriosScr
                           Icon(
                             Icons.folder_off_outlined,
                             size: 64,
-                            color: colors.grisSecundario.withOpacity(0.4),
+                            color: colors.grisSecundario.withValues(alpha: 0.4),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -300,7 +307,7 @@ class _DocumentosObligatoriosScreenState extends State<DocumentosObligatoriosScr
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: colors.azul.withOpacity(0.08),
+                    color: colors.azul.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(

@@ -29,8 +29,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
   // Estados interactivos in-line
   double _inlinePm = 0.50;
   int _inlineBarras = 40;
-  double _inlineTestigoRec = 1.45;
-  double _inlinePerforado = 1.50;
+  final double _inlineTestigoRec = 1.45;
+  final double _inlinePerforado = 1.50;
   final Set<String> _eppChecked = {};
   final Set<String> _roadmapCompletados = {};
 
@@ -357,7 +357,6 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 children: List.generate(_fases.length, (i) {
                   final f = _fases[i];
                   final isActive = i == _faseActual;
-                  final isPast = i < _faseActual;
                   final c = f['color'] as Color;
                   return Expanded(
                     child: GestureDetector(
@@ -372,7 +371,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                         margin: EdgeInsets.only(right: i < _fases.length - 1 ? 6 : 0),
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                         decoration: BoxDecoration(
-                          color: isActive ? c.withOpacity(0.15) : colors.superficieSuave,
+                          color: isActive ? c.withValues(alpha: 0.15) : colors.superficieSuave,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: isActive ? c : colors.bordeSuave,
@@ -424,9 +423,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
-                                color: faseColor.withOpacity(0.12),
+                                color: faseColor.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: faseColor.withOpacity(0.4)),
+                                border: Border.all(color: faseColor.withValues(alpha: 0.4)),
                               ),
                               child: Text(
                                 "Paso ${i + 1} de $_totalPasos — ${fase['titulo']}",
@@ -477,9 +476,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: faseColor.withOpacity(0.08),
+                              color: faseColor.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: faseColor.withOpacity(0.3)),
+                              border: Border.all(color: faseColor.withValues(alpha: 0.3)),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,9 +511,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.amber.withOpacity(0.1),
+                            color: Colors.amber.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.amber.shade600.withOpacity(0.4)),
+                            border: Border.all(color: Colors.amber.shade600.withValues(alpha: 0.4)),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -561,7 +560,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
               decoration: BoxDecoration(
                 color: colors.superficie,
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, -2))
+                  BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, -2))
                 ],
               ),
               child: Row(
@@ -625,9 +624,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                         margin: const EdgeInsets.only(top: 8, bottom: 12),
                         decoration: BoxDecoration(
-                          color: fColor.withOpacity(0.12),
+                          color: fColor.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: fColor.withOpacity(0.4)),
+                          border: Border.all(color: fColor.withValues(alpha: 0.4)),
                         ),
                         child: Row(
                           children: [
@@ -687,7 +686,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                                     Expanded(
                                       child: Container(
                                         width: 2,
-                                        color: fColor.withOpacity(0.3),
+                                        color: fColor.withValues(alpha: 0.3),
                                         margin: const EdgeInsets.symmetric(vertical: 4),
                                       ),
                                     ),
@@ -701,10 +700,10 @@ class _TutorialScreenState extends State<TutorialScreen> {
                                   margin: const EdgeInsets.only(bottom: 14),
                                   padding: const EdgeInsets.all(14),
                                   decoration: BoxDecoration(
-                                    color: isChecked ? Colors.green.withOpacity(0.04) : colors.superficie,
+                                    color: isChecked ? Colors.green.withValues(alpha: 0.04) : colors.superficie,
                                     borderRadius: BorderRadius.circular(14),
                                     border: Border.all(
-                                      color: isChecked ? Colors.green.withOpacity(0.3) : colors.bordeSuave,
+                                      color: isChecked ? Colors.green.withValues(alpha: 0.3) : colors.bordeSuave,
                                       width: 1,
                                     ),
                                   ),
@@ -753,7 +752,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                                         Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                           decoration: BoxDecoration(
-                                            color: fColor.withOpacity(0.08),
+                                            color: fColor.withValues(alpha: 0.08),
                                             borderRadius: BorderRadius.circular(6),
                                           ),
                                           child: Text(
@@ -790,7 +789,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
       decoration: BoxDecoration(
         color: colors.superficieSuave,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: accent.withOpacity(0.3)),
+        border: Border.all(color: accent.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -827,7 +826,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
       decoration: BoxDecoration(
         color: colors.superficieSuave,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: accent.withOpacity(0.3)),
+        border: Border.all(color: accent.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -847,7 +846,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
               )
             ],
           ),
-          Text("Formula: (${_inlineBarras} × 3.00) + 4.15m - ${_inlinePm.toStringAsFixed(2)}m", style: const TextStyle(fontSize: 11, fontFamily: "monospace")),
+          Text("Formula: ($_inlineBarras × 3.00) + 4.15m - ${_inlinePm.toStringAsFixed(2)}m", style: const TextStyle(fontSize: 11, fontFamily: "monospace")),
           const SizedBox(height: 4),
           Text("Herramientas Totales = ${herr.toStringAsFixed(2)} m", style: TextStyle(color: accent, fontSize: 13, fontWeight: FontWeight.bold)),
         ],
@@ -863,9 +862,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: done ? Colors.green.withOpacity(0.08) : colors.superficieSuave,
+        color: done ? Colors.green.withValues(alpha: 0.08) : colors.superficieSuave,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: done ? Colors.green : accent.withOpacity(0.3)),
+        border: Border.all(color: done ? Colors.green : accent.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -890,7 +889,11 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 selectedColor: Colors.green,
                 onSelected: (sel) {
                   setState(() {
-                    if (sel) _eppChecked.add(item); else _eppChecked.remove(item);
+                    if (sel) {
+                      _eppChecked.add(item);
+                    } else {
+                      _eppChecked.remove(item);
+                    }
                   });
                 },
               );
@@ -909,7 +912,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
       decoration: BoxDecoration(
         color: colors.superficieSuave,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: accent.withOpacity(0.3)),
+        border: Border.all(color: accent.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

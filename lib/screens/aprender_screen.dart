@@ -70,6 +70,13 @@ class AprenderScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: onBack ?? () => Navigator.maybePop(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: "Volver al Inicio",
+            onPressed: () => Navigator.popUntil(context, (r) => r.isFirst),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

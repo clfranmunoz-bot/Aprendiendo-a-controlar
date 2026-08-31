@@ -86,7 +86,7 @@ class HeroBlock extends StatelessWidget {
                   _buildChip(
                     context,
                     label: modoEdicionHero ? "💾 Guardar" : "⚙️",
-                    backgroundColor: modoEdicionHero ? colors.verde.withOpacity(0.3) : null,
+                    backgroundColor: modoEdicionHero ? colors.verde.withValues(alpha: 0.3) : null,
                     onTap: onToggleEdicion,
                   ),
                   const SizedBox(width: 4),
@@ -133,20 +133,20 @@ class HeroBlock extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   decoration: BoxDecoration(
-                    color: modoEdicionHero ? colors.azul.withOpacity(0.15) : colors.superficie.withOpacity(isDark ? 0.6 : 0.85),
+                    color: modoEdicionHero ? colors.azul.withValues(alpha: 0.15) : colors.superficie.withValues(alpha: isDark ? 0.6 : 0.85),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: modoEdicionHero ? colors.azul : colors.bordeSuave,
                       width: modoEdicionHero ? 1.5 : 1.0,
                     ),
-                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 8)],
+                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8)],
                   ),
                   child: Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: colors.azul.withOpacity(0.12),
+                          color: colors.azul.withValues(alpha: 0.12),
                           shape: BoxShape.circle,
                         ),
                         child: Text(
@@ -297,7 +297,7 @@ class HeroBlock extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: backgroundColor ?? colors.superficie.withOpacity(0.8),
+          color: backgroundColor ?? colors.superficie.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: colors.bordeSuave),
         ),
@@ -321,9 +321,9 @@ class HeroBlock extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         decoration: BoxDecoration(
-          color: colors.azul.withOpacity(0.15),
+          color: colors.azul.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: colors.azul.withOpacity(0.4)),
+          border: Border.all(color: colors.azul.withValues(alpha: 0.4)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -382,7 +382,7 @@ class HeroBlock extends StatelessWidget {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 8),
                   decoration: BoxDecoration(
-                    color: esActivo ? colors.azul.withOpacity(0.12) : colors.superficieSuave,
+                    color: esActivo ? colors.azul.withValues(alpha: 0.12) : colors.superficieSuave,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: esActivo ? colors.azul : colors.bordeSuave),
                   ),
@@ -453,7 +453,7 @@ class HeroBlock extends StatelessWidget {
               child: Container(
                 width: 40,
                 height: 4,
-                decoration: BoxDecoration(color: colors.grisSecundario.withOpacity(0.3), borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(color: colors.grisSecundario.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(2)),
               ),
             ),
             const SizedBox(height: 14),
@@ -465,7 +465,7 @@ class HeroBlock extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 4),
-            Text("Antigravity DDH • Manual Técnico para Controladores de Sondaje", style: TextStyle(color: colors.grisTexto, fontSize: 12)),
+            Text("Manual Técnico para Controladores de Sondaje", style: TextStyle(color: colors.grisTexto, fontSize: 12)),
             const Divider(height: 20),
 
             Expanded(
@@ -502,6 +502,12 @@ class HeroBlock extends StatelessWidget {
                       icon: "🔐",
                       titulo: "PIN y Accesos de Instructor",
                       contenido: "• PIN Instructor por defecto: 9900\n(Para permisos avanzados de supervisión, consulta con tu instructor responsable)."
+                    ),
+                    _buildInfoSection(
+                      context,
+                      icon: "👨‍💻",
+                      titulo: "Creador del Proyecto",
+                      contenido: "Desarrollado y creado por Claudio Muñoz Rubilar.",
                     ),
                   ],
                 ),

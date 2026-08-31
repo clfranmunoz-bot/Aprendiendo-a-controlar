@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aprender_a_controlar/utils/app_colors.dart';
-import 'package:aprender_a_controlar/utils/app_routes.dart';
 import 'package:aprender_a_controlar/widgets/drawer_menu.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -445,6 +444,12 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.refresh_outlined),
+            color: colors.azulOscuro,
+            tooltip: "Reiniciar Tareas",
+            onPressed: _reiniciarChecklist,
+          ),
+          IconButton(
             icon: const Icon(Icons.home_outlined),
             color: colors.azulOscuro,
             tooltip: "Ir al Inicio",
@@ -474,12 +479,12 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [colors.azul.withOpacity(0.1), colors.azulClaro.withOpacity(0.15)],
+                  colors: [colors.azul.withValues(alpha: 0.1), colors.azulClaro.withValues(alpha: 0.15)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: colors.azul.withOpacity(0.3)),
+                border: Border.all(color: colors.azul.withValues(alpha: 0.3)),
               ),
               child: Column(
                 children: [
@@ -532,7 +537,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                   decoration: BoxDecoration(
-                                    color: _inicioTurno != null ? Colors.green.withOpacity(0.15) : colors.superficieSuave,
+                                    color: _inicioTurno != null ? Colors.green.withValues(alpha: 0.15) : colors.superficieSuave,
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(color: _inicioTurno != null ? Colors.green : colors.bordeSuave),
                                   ),
@@ -623,7 +628,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                         decoration: BoxDecoration(
-                          color: allDone ? Colors.green.withOpacity(0.15) : (p['color'] as Color).withOpacity(0.12),
+                          color: allDone ? Colors.green.withValues(alpha: 0.15) : (p['color'] as Color).withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
@@ -662,15 +667,15 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: isChecked ? Colors.green.withOpacity(0.04) : colors.superficie,
+                        color: isChecked ? Colors.green.withValues(alpha: 0.04) : colors.superficie,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: isChecked ? Colors.green.withOpacity(0.4) : colors.bordeSuave,
+                          color: isChecked ? Colors.green.withValues(alpha: 0.4) : colors.bordeSuave,
                           width: isChecked ? 1.5 : 1,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.01),
+                            color: Colors.black.withValues(alpha: 0.01),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           )
@@ -720,7 +725,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
                                   // Ícono del Paso
                                   CircleAvatar(
                                     radius: 16,
-                                    backgroundColor: pColor.withOpacity(0.12),
+                                    backgroundColor: pColor.withValues(alpha: 0.12),
                                     child: Icon(item['icon'] as IconData, size: 16, color: pColor),
                                   ),
                                   const SizedBox(width: 10),
@@ -759,7 +764,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
                               width: double.infinity,
                               padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
                               decoration: BoxDecoration(
-                                color: colors.superficieSuave.withOpacity(0.5),
+                                color: colors.superficieSuave.withValues(alpha: 0.5),
                                 borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(14),
                                   bottomRight: Radius.circular(14),
@@ -780,9 +785,9 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
                                     width: double.infinity,
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Colors.amber.withOpacity(0.1),
+                                      color: Colors.amber.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.amber.shade600.withOpacity(0.3)),
+                                      border: Border.all(color: Colors.amber.shade600.withValues(alpha: 0.3)),
                                     ),
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -814,73 +819,190 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
     );
   }
 
+  Future<void> _borrarHistorialTurnos() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.delete_forever_outlined, color: Colors.red),
+            SizedBox(width: 8),
+            Text("¿Borrar Historial?"),
+          ],
+        ),
+        content: Text("Esta acción eliminará de forma permanente todo el historial de turnos archivados para '${widget.perfilActivo}'."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text("Cancelar"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
+            child: const Text("Borrar Definitivamente"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final prefix = "checklist_${widget.perfilActivo}_";
+      await prefs.remove("${prefix}historial");
+      setState(() {
+        _historialTurnos.clear();
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("✅ Historial de turnos eliminado con éxito.")),
+        );
+      }
+    }
+  }
+
+  Future<void> _reiniciarChecklist() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.refresh, color: Colors.orange),
+            SizedBox(width: 8),
+            Text("Reiniciar Tareas"),
+          ],
+        ),
+        content: const Text("¿Deseas desmarcar todas las tareas del paso a paso del turno actual para comenzar de nuevo?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text("Cancelar"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange.shade800, foregroundColor: Colors.white),
+            child: const Text("Reiniciar"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      setState(() {
+        _checklistValues = List.filled(_checklistItems.length, false);
+        _inicioTurno = null;
+      });
+      await _guardarEstado();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("🔄 Paso a paso del turno reiniciado.")),
+        );
+      }
+    }
+  }
+
   void _mostrarModalHistorial(BuildContext context) {
     final colors = AppColors.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: colors.superficie,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.history, color: colors.azul),
-                const SizedBox(width: 8),
-                Text(
-                  "Historial de Turnos Archivos",
-                  style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            if (_historialTurnos.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Center(
-                  child: Text("Aún no has archivado ningún turno en este perfil.", style: TextStyle(color: colors.grisTexto, fontSize: 13)),
-                ),
-              )
-            else
-              SizedBox(
-                height: 240,
-                child: ListView.builder(
-                  itemCount: _historialTurnos.length,
-                  itemBuilder: (c, i) {
-                    final h = _historialTurnos[i];
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: colors.superficieSuave,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: colors.bordeSuave),
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setModalState) => Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.history, color: colors.azul),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Historial de Turnos Archivados",
+                        style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 15),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(h['fecha'].toString(), style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 12.5)),
-                              Text("Duración: ${h['duracion']}", style: TextStyle(color: colors.grisTexto, fontSize: 11)),
-                            ],
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(color: Colors.green.withOpacity(0.15), borderRadius: BorderRadius.circular(6)),
-                            child: Text(h['completado'].toString(), style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 11)),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                    ],
+                  ),
+                  if (_historialTurnos.isNotEmpty)
+                    TextButton.icon(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        _borrarHistorialTurnos();
+                      },
+                      icon: const Icon(Icons.delete_sweep_outlined, size: 18, color: Colors.red),
+                      label: const Text("Borrar Todo", style: TextStyle(color: Colors.red, fontSize: 12)),
+                    ),
+                ],
               ),
-          ],
+              const SizedBox(height: 12),
+              if (_historialTurnos.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 28),
+                  child: Center(
+                    child: Text("Aún no has archivado ningún turno en este perfil.", style: TextStyle(color: colors.grisTexto, fontSize: 13)),
+                  ),
+                )
+              else
+                SizedBox(
+                  height: 280,
+                  child: ListView.builder(
+                    itemCount: _historialTurnos.length,
+                    itemBuilder: (c, i) {
+                      final h = _historialTurnos[i];
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: colors.superficieSuave,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: colors.bordeSuave),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(h['fecha'].toString(), style: TextStyle(color: colors.azulOscuro, fontWeight: FontWeight.bold, fontSize: 12.5)),
+                                Text("Duración: ${h['duracion']}", style: TextStyle(color: colors.grisTexto, fontSize: 11)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                  decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(6)),
+                                  child: Text(h['completado'].toString(), style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 11)),
+                                ),
+                                const SizedBox(width: 4),
+                                IconButton(
+                                  icon: const Icon(Icons.delete_outline, size: 18, color: Colors.redAccent),
+                                  tooltip: "Borrar registro",
+                                  onPressed: () async {
+                                    setState(() {
+                                      _historialTurnos.removeAt(i);
+                                    });
+                                    setModalState(() {});
+                                    final prefs = await SharedPreferences.getInstance();
+                                    final prefix = "checklist_${widget.perfilActivo}_";
+                                    final raw = _historialTurnos.map((item) => "${item['fecha']}|${item['completado']}|${item['duracion']}").toList();
+                                    await prefs.setStringList("${prefix}historial", raw);
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

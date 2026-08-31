@@ -56,12 +56,12 @@ class _CustomCardState extends State<CustomCard> {
               color: widget.colorFondo,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
-                color: Theme.of(context).dividerColor.withOpacity(0.08),
+                color: Theme.of(context).dividerColor.withValues(alpha: 0.08),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(widget.colorFondo == Colors.white ? 0.04 : 0.12),
+                  color: Colors.black.withValues(alpha: widget.colorFondo == Colors.white ? 0.04 : 0.12),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),

@@ -726,7 +726,7 @@ class CalculosSondajes {
       final seAgregoBarra = _random.nextBool();
       if (seAgregoBarra) {
         largoBarra = _randomChoice([2.90, 3.00]);
-        final minContra = 20;
+        const minContra = 20;
         final maxContra = ((perforadoVal - 0.20) * 100).toInt().clamp(30, 200);
         contraAnterior = redondear2(_randRange(minContra, maxContra) / 100.0);
         contraActual = redondear2(

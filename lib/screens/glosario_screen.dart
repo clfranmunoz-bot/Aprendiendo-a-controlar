@@ -282,7 +282,7 @@ class _GlosarioScreenState extends State<GlosarioScreen> {
         color: colors.superficie,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: colors.bordeSuave, width: 1),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 4, offset: const Offset(0, 2))],
       ),
       clipBehavior: Clip.antiAlias,
       child: ExpansionTile(

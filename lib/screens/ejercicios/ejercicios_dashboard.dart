@@ -28,7 +28,7 @@ class EjerciciosDashboard extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [colors.purpura, colors.purpura.withOpacity(0.8)],
+                colors: [colors.purpura, colors.purpura.withValues(alpha: 0.8)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -242,7 +242,7 @@ class EjerciciosDashboard extends StatelessWidget {
           border: Border.all(color: colors.bordeSuave, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.015),
+              color: Colors.black.withValues(alpha: 0.015),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),

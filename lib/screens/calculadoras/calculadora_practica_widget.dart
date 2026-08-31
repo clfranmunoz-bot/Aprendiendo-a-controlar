@@ -429,7 +429,7 @@ class _CalculadoraPracticaWidgetState extends State<CalculadoraPracticaWidget> {
                                 : widget.tipoIndex == 3
                                     ? r'\text{Distancia fisica} = \frac{\text{Distancia teorica}\times\text{Recuperado}}{\text{Perforado}}'
                                     : r'\text{Perforado} = \text{Fondo actual} - \text{Fondo anterior}',
-                    color: widget.colors.azulOscuro.withOpacity(0.9),
+                    color: widget.colors.azulOscuro.withValues(alpha: 0.9),
                     fontSize: 15,
                     textAlign: TextAlign.left,
                   ),
@@ -438,7 +438,7 @@ class _CalculadoraPracticaWidgetState extends State<CalculadoraPracticaWidget> {
                 Text(
                   interpretacion,
                   style: TextStyle(
-                    color: widget.colors.azulOscuro.withOpacity(0.9),
+                    color: widget.colors.azulOscuro.withValues(alpha: 0.9),
                     fontSize: 13,
                     height: 1.35,
                   ),

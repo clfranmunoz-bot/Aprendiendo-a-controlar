@@ -42,11 +42,11 @@ class _ProcedimientosScreenState extends State<ProcedimientosScreen> {
 
   void _copiarEnlace(BuildContext context, String urlString) {
     Clipboard.setData(ClipboardData(text: urlString)).then((_) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Row(
-              children: const [
+            content: const Row(
+              children: [
                 Icon(Icons.check_circle, color: Colors.white, size: 20),
                 SizedBox(width: 8),
                 Text("Enlace copiado al portapapeles con éxito."),
@@ -117,6 +117,13 @@ class _ProcedimientosScreenState extends State<ProcedimientosScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: widget.onBack ?? () => Navigator.maybePop(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: "Volver al Inicio",
+            onPressed: () => Navigator.popUntil(context, (r) => r.isFirst),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -139,7 +146,7 @@ class _ProcedimientosScreenState extends State<ProcedimientosScreen> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search, color: colors.grisTexto),
                     hintText: "Buscar por nombre, código o versión...",
-                    hintStyle: TextStyle(color: colors.grisTexto.withOpacity(0.7)),
+                    hintStyle: TextStyle(color: colors.grisTexto.withValues(alpha: 0.7)),
                     filled: true,
                     fillColor: colors.isDark
                         ? const Color(0xFF1E293B)
@@ -187,9 +194,9 @@ class _ProcedimientosScreenState extends State<ProcedimientosScreen> {
                           backgroundColor: colors.isDark
                               ? const Color(0xFF1E293B)
                               : const Color(0xFFF1F5F9),
-                          selectedColor: colors.azul.withOpacity(0.18),
+                          selectedColor: colors.azul.withValues(alpha: 0.18),
                           side: BorderSide(
-                            color: isSelected ? colors.azul.withOpacity(0.5) : Colors.transparent,
+                            color: isSelected ? colors.azul.withValues(alpha: 0.5) : Colors.transparent,
                             width: 1,
                           ),
                         ),
@@ -213,7 +220,7 @@ class _ProcedimientosScreenState extends State<ProcedimientosScreen> {
                           Icon(
                             Icons.search_off_rounded,
                             size: 64,
-                            color: colors.grisSecundario.withOpacity(0.4),
+                            color: colors.grisSecundario.withValues(alpha: 0.4),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -291,7 +298,7 @@ class _ProcedimientosScreenState extends State<ProcedimientosScreen> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: colors.azul.withOpacity(0.08),
+                    color: colors.azul.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(

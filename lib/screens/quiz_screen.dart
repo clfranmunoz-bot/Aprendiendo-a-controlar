@@ -24,7 +24,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int _score = 0;
   int? _opcionSeleccionada;
   bool _respondida = false;
-  List<Pregunta> _preguntasErroneas = [];
+  final List<Pregunta> _preguntasErroneas = [];
   String _selectedQuizType = "Todos";
   List<Map<String, dynamic>> _historial = [];
 
@@ -240,7 +240,7 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
         const SizedBox(height: 24),
         DropdownButtonFormField<String>(
-          value: _selectedQuizType,
+          initialValue: _selectedQuizType,
           decoration: InputDecoration(
             labelText: "Selecciona el procedimiento a evaluar",
             labelStyle: TextStyle(color: colors.grisTexto, fontSize: 14),
@@ -443,9 +443,9 @@ class _QuizScreenState extends State<QuizScreen> {
                       textColor = colors.rojo;
                       border = BorderSide(color: colors.rojo, width: 1.5);
                     } else {
-                      btnColor = colors.superficie.withOpacity(0.5);
+                      btnColor = colors.superficie.withValues(alpha: 0.5);
                       textColor = colors.grisSecundario;
-                      border = BorderSide(color: colors.bordeSuave.withOpacity(0.5), width: 1);
+                      border = BorderSide(color: colors.bordeSuave.withValues(alpha: 0.5), width: 1);
                     }
                   }
 
@@ -465,7 +465,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               ? []
                               : [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.02),
+                                    color: Colors.black.withValues(alpha: 0.02),
                                     blurRadius: 4,
                                     offset: const Offset(0, 2),
                                   )
@@ -509,8 +509,8 @@ class _QuizScreenState extends State<QuizScreen> {
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: _opcionSeleccionada == pregunta.correcta
-                            ? colors.verde.withOpacity(0.3)
-                            : colors.rojo.withOpacity(0.3),
+                            ? colors.verde.withValues(alpha: 0.3)
+                            : colors.rojo.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Column(
@@ -532,7 +532,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         Text(
                           pregunta.retroalimentacion,
                           style: TextStyle(
-                            color: colors.azulOscuro.withOpacity(0.9),
+                            color: colors.azulOscuro.withValues(alpha: 0.9),
                             fontSize: 13.5,
                             height: 1.35,
                           ),
@@ -820,7 +820,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.history, size: 48, color: colors.grisTexto.withOpacity(0.5)),
+                      Icon(Icons.history, size: 48, color: colors.grisTexto.withValues(alpha: 0.5)),
                       const SizedBox(height: 12),
                       Text(
                         "No hay intentos registrados aún.",
@@ -858,7 +858,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
                         leading: CircleAvatar(
-                          backgroundColor: scoreColor.withOpacity(0.1),
+                          backgroundColor: scoreColor.withValues(alpha: 0.1),
                           child: const Text(
                             "📈",
                             style: TextStyle(fontSize: 18),
@@ -879,7 +879,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         trailing: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
-                            color: scoreColor.withOpacity(0.1),
+                            color: scoreColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(

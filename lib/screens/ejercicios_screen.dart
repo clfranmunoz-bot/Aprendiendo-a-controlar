@@ -121,14 +121,14 @@ class _EjerciciosScreenState extends State<EjerciciosScreen> {
             setState(() {
               _trainerTopic = topic;
               _mode = ScreenMode.activeTopicTrainer;
-              _title = "Entrenador: " +
-                  switch (topic) {
-                    TrainerTopic.contra => "Contra",
-                    TrainerTopic.fondo => "Fondo Pozo",
-                    TrainerTopic.recuperacion => "Recuperación",
-                    TrainerTopic.regularizacion => "Regularización",
-                    TrainerTopic.perforado => "Perforado",
-                  };
+              final topicName = switch (topic) {
+                TrainerTopic.contra => "Contra",
+                TrainerTopic.fondo => "Fondo Pozo",
+                TrainerTopic.recuperacion => "Recuperación",
+                TrainerTopic.regularizacion => "Regularización",
+                TrainerTopic.perforado => "Perforado",
+              };
+              _title = "Entrenador: $topicName";
             });
           },
           onStartStaticBank: () {

@@ -398,7 +398,7 @@ class _RegularizacionTabState extends State<RegularizacionTab> {
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: Colors.black.withValues(alpha: 0.1),
                                 blurRadius: 4,
                                 offset: const Offset(0, 2),
                               ),
@@ -480,7 +480,7 @@ class _RegularizacionTabState extends State<RegularizacionTab> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: esUltimo ? Colors.transparent : colors.bordeSuave.withOpacity(0.5),
+                    color: esUltimo ? Colors.transparent : colors.bordeSuave.withValues(alpha: 0.5),
                     width: 1,
                   ),
                 ),
@@ -489,7 +489,7 @@ class _RegularizacionTabState extends State<RegularizacionTab> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundColor: colors.naranjo.withOpacity(0.15),
+                    backgroundColor: colors.naranjo.withValues(alpha: 0.15),
                     foregroundColor: colors.naranjo,
                     radius: 18,
                     child: Text(
@@ -543,9 +543,9 @@ class _RegularizacionTabState extends State<RegularizacionTab> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: colors.naranjo.withOpacity(0.12),
+                      color: colors.naranjo.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: colors.naranjo.withOpacity(0.3), width: 1),
+                      border: Border.all(color: colors.naranjo.withValues(alpha: 0.3), width: 1),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,

@@ -118,6 +118,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home_outlined, color: colors.azulOscuro),
+            tooltip: "Volver al Inicio",
+            onPressed: () => widget.onNavigate('home'),
+          ),
+        ],
       ),
       drawer: DrawerMenu(
         onNavigate: widget.onNavigate,
@@ -177,7 +184,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               color: colors.superficie,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 4,
                   offset: const Offset(0, -2),
                 ),

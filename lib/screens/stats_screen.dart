@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:aprender_a_controlar/utils/app_colors.dart';
-import 'package:aprender_a_controlar/utils/app_routes.dart';
 import 'package:aprender_a_controlar/services/stats_service.dart';
 import 'package:aprender_a_controlar/widgets/drawer_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -146,6 +145,11 @@ class _StatsScreenState extends State<StatsScreen> {
               tooltip: "Borrar estadísticas",
               onPressed: _confirmarLimpiar,
             ),
+          IconButton(
+            icon: Icon(Icons.home_outlined, color: colors.azulOscuro),
+            tooltip: "Volver al Inicio",
+            onPressed: () => widget.onNavigate('home'),
+          ),
         ],
       ),
       drawer: DrawerMenu(
@@ -293,10 +297,10 @@ class _StatsScreenState extends State<StatsScreen> {
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: pct >= 80
-                                      ? colors.verde.withOpacity(0.1)
+                                      ? colors.verde.withValues(alpha: 0.1)
                                       : pct >= 60
-                                          ? colors.naranjo.withOpacity(0.1)
-                                          : colors.rojo.withOpacity(0.1),
+                                          ? colors.naranjo.withValues(alpha: 0.1)
+                                          : colors.rojo.withValues(alpha: 0.1),
                                   child: Icon(
                                     pct >= 80 ? Icons.check_circle_outline : Icons.error_outline,
                                     color: pct >= 80
@@ -379,8 +383,8 @@ class _StatsScreenState extends State<StatsScreen> {
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: isComplete
-                                      ? colors.verde.withOpacity(0.1)
-                                      : colors.naranjo.withOpacity(0.1),
+                                      ? colors.verde.withValues(alpha: 0.1)
+                                      : colors.naranjo.withValues(alpha: 0.1),
                                   child: Icon(
                                     isComplete ? Icons.check_circle : Icons.warning_amber_rounded,
                                     color: isComplete ? colors.verde : colors.naranjo,
@@ -470,7 +474,7 @@ class _StatsScreenState extends State<StatsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.query_stats_outlined, size: 80, color: colors.grisTexto.withOpacity(0.5)),
+            Icon(Icons.query_stats_outlined, size: 80, color: colors.grisTexto.withValues(alpha: 0.5)),
             const SizedBox(height: 16),
             Text(
               "Sin Historial Aún",
@@ -513,7 +517,7 @@ class _LearningCurvePainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final gridPaint = Paint()
-      ..color = colors.bordeSuave.withOpacity(0.5)
+      ..color = colors.bordeSuave.withValues(alpha: 0.5)
       ..strokeWidth = 1.0;
 
     // Draw horizontal grid lines
@@ -525,7 +529,7 @@ class _LearningCurvePainter extends CustomPainter {
       // Draw labels (100%, 75%, etc.)
       final textSpan = TextSpan(
         text: "${(i * 100 ~/ gridLines)}%",
-        style: TextStyle(color: colors.grisTexto.withOpacity(0.8), fontSize: 8),
+        style: TextStyle(color: colors.grisTexto.withValues(alpha: 0.8), fontSize: 8),
       );
       final textPainter = TextPainter(
         text: textSpan,
@@ -566,7 +570,7 @@ class _LearningCurvePainter extends CustomPainter {
         pt,
         6,
         Paint()
-          ..color = Colors.white.withOpacity(0.4)
+          ..color = Colors.white.withValues(alpha: 0.4)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.5,
       );

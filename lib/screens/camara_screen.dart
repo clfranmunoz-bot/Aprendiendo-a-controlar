@@ -289,7 +289,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
                 border: Border.all(color: colors.bordeSuave, width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   )
@@ -358,14 +358,14 @@ class _CamaraScreenState extends State<CamaraScreen> {
                       width: 72,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: _todoListo ? colors.rojo : colors.grisSecundario.withOpacity(0.3),
+                        color: _todoListo ? colors.rojo : colors.grisSecundario.withValues(alpha: 0.3),
                         border: Border.all(
                           color: Colors.white,
                           width: 4,
                         ),
                         boxShadow: _todoListo ? [
                           BoxShadow(
-                            color: colors.rojo.withOpacity(0.4),
+                            color: colors.rojo.withValues(alpha: 0.4),
                             blurRadius: 12,
                             spreadRadius: 2,
                           )
@@ -452,10 +452,10 @@ class _CamaraScreenState extends State<CamaraScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        color: colors.superficie.withOpacity(0.85),
+        color: colors.superficie.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: colors.bordeSuave.withOpacity(0.5),
+          color: colors.bordeSuave.withValues(alpha: 0.5),
           width: 1,
         ),
       ),
@@ -595,7 +595,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withValues(alpha: 0.6),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
@@ -722,7 +722,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
           Container(
             height: 1,
             width: double.infinity,
-            color: Colors.cyan.withOpacity(0.3),
+            color: Colors.cyan.withValues(alpha: 0.3),
           ),
 
           // Overlay simulating a reflection/hologram
@@ -732,9 +732,9 @@ class _CamaraScreenState extends State<CamaraScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.white.withOpacity(0.04),
-                      Colors.white.withOpacity(0.0),
-                      Colors.black.withOpacity(0.05),
+                      Colors.white.withValues(alpha: 0.04),
+                      Colors.white.withValues(alpha: 0.0),
+                      Colors.black.withValues(alpha: 0.05),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -750,9 +750,9 @@ class _CamaraScreenState extends State<CamaraScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.cyan.withOpacity(0.2),
+                color: Colors.cyan.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: Colors.cyan.withOpacity(0.5)),
+                border: Border.all(color: Colors.cyan.withValues(alpha: 0.5)),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
@@ -809,9 +809,9 @@ class _CamaraScreenState extends State<CamaraScreen> {
                         borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
                         gradient: LinearGradient(
                           colors: [
-                            colorRoca.withOpacity(0.8),
+                            colorRoca.withValues(alpha: 0.8),
                             colorRoca,
-                            colorRoca.withOpacity(0.6),
+                            colorRoca.withValues(alpha: 0.6),
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -828,9 +828,9 @@ class _CamaraScreenState extends State<CamaraScreen> {
                         borderRadius: const BorderRadius.horizontal(right: Radius.circular(8)),
                         gradient: LinearGradient(
                           colors: [
-                            colorRoca.withOpacity(0.8),
+                            colorRoca.withValues(alpha: 0.8),
                             colorRoca,
-                            colorRoca.withOpacity(0.6),
+                            colorRoca.withValues(alpha: 0.6),
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -879,7 +879,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
             child: Text(
               "${metroIni.toStringAsFixed(2)}m",
               style: TextStyle(
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withValues(alpha: 0.7),
                 fontSize: 9,
                 fontWeight: FontWeight.bold,
                 fontFamily: "Courier",
@@ -891,7 +891,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
             child: Text(
               "${metroFin.toStringAsFixed(2)}m",
               style: TextStyle(
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withValues(alpha: 0.7),
                 fontSize: 9,
                 fontWeight: FontWeight.bold,
                 fontFamily: "Courier",
@@ -938,7 +938,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: colors.verde.withOpacity(0.85),
+                      color: colors.verde.withValues(alpha: 0.85),
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: const [
                         BoxShadow(color: Colors.black26, blurRadius: 8),

@@ -46,13 +46,13 @@ class _ShortcutSlotState extends State<ShortcutSlot> {
           child: Container(
             decoration: BoxDecoration(
               color: isEmpty
-                  ? (colors.isDark ? Colors.white.withOpacity(0.02) : Colors.black.withOpacity(0.02))
-                  : colors.getMenuColor(widget.seccion!.colorIndex).withOpacity(colors.isDark ? 0.15 : 0.1),
+                  ? (colors.isDark ? Colors.white.withValues(alpha: 0.02) : Colors.black.withValues(alpha: 0.02))
+                  : colors.getMenuColor(widget.seccion!.colorIndex).withValues(alpha: colors.isDark ? 0.15 : 0.1),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isEmpty
-                    ? colors.bordeSuave.withOpacity(0.3)
-                    : colors.getMenuColor(widget.seccion!.colorIndex).withOpacity(0.4),
+                    ? colors.bordeSuave.withValues(alpha: 0.3)
+                    : colors.getMenuColor(widget.seccion!.colorIndex).withValues(alpha: 0.4),
                 width: isEmpty ? 1.5 : 1,
                 style: isEmpty ? BorderStyle.solid : BorderStyle.solid,
               ),
@@ -60,7 +60,7 @@ class _ShortcutSlotState extends State<ShortcutSlot> {
                   ? []
                   : [
                       BoxShadow(
-                        color: colors.getMenuColor(widget.seccion!.colorIndex).withOpacity(0.1),
+                        color: colors.getMenuColor(widget.seccion!.colorIndex).withValues(alpha: 0.1),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
                       ),
@@ -81,7 +81,7 @@ class _ShortcutSlotState extends State<ShortcutSlot> {
                               children: [
                                 Icon(
                                   Icons.add_circle_outline,
-                                  color: colors.grisSecundario.withOpacity(0.8),
+                                  color: colors.grisSecundario.withValues(alpha: 0.8),
                                   size: 28,
                                 ),
                                 const SizedBox(height: 6),
@@ -138,7 +138,7 @@ class _ShortcutSlotState extends State<ShortcutSlot> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
+                                color: Colors.black.withValues(alpha: 0.2),
                                 blurRadius: 4,
                                 offset: const Offset(0, 2),
                               )

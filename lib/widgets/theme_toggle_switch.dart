@@ -41,7 +41,7 @@ class ThemeToggleSwitch extends StatelessWidget {
                 ? []
                 : [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
+                      color: Colors.black.withValues(alpha: 0.04),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     )
@@ -90,7 +90,7 @@ class ThemeToggleSwitch extends StatelessWidget {
                           : Colors.white, // Blanco limpio en modo claro
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.18),
+                          color: Colors.black.withValues(alpha: 0.18),
                           blurRadius: 3,
                           offset: const Offset(0, 1.5),
                         )
