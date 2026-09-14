@@ -13,8 +13,18 @@ const List<TerminoGlosario> bancoGlosario = [
 
   // ─── 🔧 EQUIPOS Y HERRAMIENTAS ───────────────────────────────────────────
   TerminoGlosario(
-    termino: "Barril tomamuestra",
-    definicion: "Conjunto de herramientas que se inserta en el interior de la sarta para capturar el testigo de roca. Está compuesto por el tubo exterior, el tubo interior, la laina y la corona.",
+    termino: "Tubo interior",
+    definicion: "Componente del barril muestreador que se aloja dentro del tubo exterior para recibir y proteger el testigo de roca durante la perforación. Se extrae mediante el cable wire line (pescante) hacia la superficie sin necesidad de retirar la sarta de barras.",
+    categoria: "🔧 Equipos y Herramientas",
+  ),
+  TerminoGlosario(
+    termino: "Collera",
+    definicion: "Unión de dos barras, esto se emplea principalmente cuando hay movimientos de herramientas ya que aceleran el proceso.",
+    categoria: "🔧 Equipos y Herramientas",
+  ),
+  TerminoGlosario(
+    termino: "Rimeo",
+    definicion: "(Del inglés to ream) Significa ensanchar o repasar el diámetro de un pozo que ya ha sido perforado previamente.",
     categoria: "🔧 Equipos y Herramientas",
   ),
   TerminoGlosario(
@@ -121,7 +131,7 @@ const List<TerminoGlosario> bancoGlosario = [
   ),
   TerminoGlosario(
     termino: "Herramientas Totales (Sarta)",
-    definicion: "Suma total de la longitud de la sarta de perforación, calculada como: (N° de Barras × Largo de Barra) + Barril + Extensión Reflex − Punto Muerto.",
+    definicion: "Suma total de la longitud de la sarta de perforación, calculada como: (N° de Barras × Largo de Barra) + Barril − Punto Muerto. Si es un pozo orientado, se añade la extensión Reflex (+0.40 m) a la sarta.",
     categoria: "📐 Medición y Cálculo",
   ),
   TerminoGlosario(
@@ -311,7 +321,7 @@ const List<TerminoGlosario> bancoGlosario = [
 
   // ─── 💧 FLUIDOS Y LODOS ──────────────────────────────────────────────────
   TerminoGlosario(
-    termino: "Agua de retorno",
+    termino: "Retorno de lodo",
     definicion: "Fluido que regresa a la superficie después de circular por el interior de las barras, pasar por la corona y subir por el espacio anular entre la sarta y las paredes del pozo.",
     categoria: "💧 Fluidos y Lodos",
   ),
