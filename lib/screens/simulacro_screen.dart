@@ -43,6 +43,13 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
   bool _showCalculator = false;
   Offset _calcPosition = const Offset(80, 220);
 
+  @override
+  void initState() {
+    super.initState();
+    _config = GeneradorSimulacion.generarConfiguracion(_dificultad);
+    _corridas = GeneradorSimulacion.generarCorridas(_config);
+  }
+
   void _iniciarSimulacro() {
     _config = GeneradorSimulacion.generarConfiguracion(_dificultad);
     _corridas = GeneradorSimulacion.generarCorridas(_config);
@@ -753,9 +760,7 @@ class _SimulacroScreenState extends State<SimulacroScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => setState(() {
-                    _etrap(_etapa = 0);
-                  }),
+                  onPressed: () => _etrap(0),
                   icon: const Icon(Icons.refresh),
                   label: const Text("Nuevo Turno"),
                   style: OutlinedButton.styleFrom(

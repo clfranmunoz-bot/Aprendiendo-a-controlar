@@ -219,6 +219,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
                     side: BorderSide(color: colors.bordeSuave, width: 1.2),
                   ),
                   child: ExpansionTile(
+                    key: ValueKey(item.titulo),
                     title: Text(
                       item.titulo,
                       style: TextStyle(

@@ -233,6 +233,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> with SingleTickerProv
       }));
     }
 
+    if (!mounted) return;
     setState(() {
       _loading = false;
     });

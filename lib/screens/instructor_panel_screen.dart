@@ -57,66 +57,70 @@ class _InstructorPanelScreenState extends State<InstructorPanelScreen> {
     final controller = TextEditingController();
     bool pinCorrecto = false;
 
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        title: const Row(
-          children: [
-            Icon(Icons.lock_outline, color: Colors.blue),
-            SizedBox(width: 8),
-            Text("Acceso Instructor"),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Ingresa el PIN de supervisión para acceder al Panel de Instructor (PIN por defecto: 9900):",
-              style: TextStyle(fontSize: 13),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              obscureText: true,
-              maxLength: 6,
-              autofocus: true,
-              decoration: const InputDecoration(
-                labelText: "PIN (ej. 9900)",
-                border: OutlineInputBorder(),
+    try {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => AlertDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.lock_outline, color: Colors.blue),
+              SizedBox(width: 8),
+              Text("Acceso Instructor"),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Ingresa el PIN de supervisión para acceder al Panel de Instructor:",
+                style: TextStyle(fontSize: 13),
               ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                obscureText: true,
+                maxLength: 6,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  labelText: "PIN de Supervisor",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                widget.onNavigate('home');
+              },
+              child: const Text("Cancelar"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final esValido = await StatsService.validarPinSupervisor(controller.text);
+                if (esValido) {
+                  pinCorrecto = true;
+                  if (ctx.mounted) Navigator.pop(ctx);
+                } else {
+                  if (ctx.mounted) {
+                    ScaffoldMessenger.of(ctx).showSnackBar(
+                      const SnackBar(content: Text("❌ PIN incorrecto. Intenta nuevamente.")),
+                    );
+                  }
+                }
+              },
+              child: const Text("Ingresar"),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              widget.onNavigate('home');
-            },
-            child: const Text("Cancelar"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final esValido = await StatsService.validarPinSupervisor(controller.text);
-              if (esValido) {
-                pinCorrecto = true;
-                if (ctx.mounted) Navigator.pop(ctx);
-              } else {
-                if (ctx.mounted) {
-                  ScaffoldMessenger.of(ctx).showSnackBar(
-                    const SnackBar(content: Text("❌ PIN incorrecto. Intenta nuevamente.")),
-                  );
-                }
-              }
-            },
-            child: const Text("Ingresar"),
-          ),
-        ],
-      ),
-    );
+      );
+    } finally {
+      controller.dispose();
+    }
 
     if (pinCorrecto) {
       setState(() {
@@ -240,41 +244,45 @@ class _InstructorPanelScreenState extends State<InstructorPanelScreen> {
 
   Future<void> _mostrarDialogoCambiarPin() async {
     final controller = TextEditingController();
-    await showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text("Cambiar PIN de Supervisión"),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          maxLength: 6,
-          decoration: const InputDecoration(
-            labelText: "Nuevo PIN simple (ej. 9900)",
-            border: OutlineInputBorder(),
+    try {
+      await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text("Cambiar PIN de Supervisión"),
+          content: TextField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            maxLength: 6,
+            decoration: const InputDecoration(
+              labelText: "Nuevo PIN (4 a 6 dígitos)",
+              border: OutlineInputBorder(),
+            ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text("Cancelar"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (controller.text.trim().isNotEmpty) {
-                await StatsService.cambiarPinSupervisor(controller.text.trim());
-                if (ctx.mounted) Navigator.pop(ctx);
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("✅ PIN de supervisión actualizado exitosamente.")),
-                  );
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text("Cancelar"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (controller.text.trim().isNotEmpty) {
+                  await StatsService.cambiarPinSupervisor(controller.text.trim());
+                  if (ctx.mounted) Navigator.pop(ctx);
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("✅ PIN de supervisión actualizado exitosamente.")),
+                    );
+                  }
                 }
-              }
-            },
-            child: const Text("Guardar"),
-          ),
-        ],
-      ),
-    );
+              },
+              child: const Text("Guardar"),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      controller.dispose();
+    }
   }
 
   @override

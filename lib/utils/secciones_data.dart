@@ -227,7 +227,7 @@ final List<SeccionApp> catalogoSecciones = [
   const SeccionApp(
     id: "instructor_panel",
     titulo: "Panel del Instructor",
-    descripcion: "Supervisión, ranking de rendimiento y reportes grupales (PIN: 9900)",
+    descripcion: "Supervisión, ranking de rendimiento y reportes grupales",
     emoji: "👥",
     colorIndex: 23,
     pilar: "asistentes",

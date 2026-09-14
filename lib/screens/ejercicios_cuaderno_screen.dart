@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aprender_a_controlar/utils/app_colors.dart';
@@ -131,6 +132,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
   bool _descVisible = false;
   String _direccionCambioBarril = "Corto a Largo"; // "Corto a Largo" or "Largo a Corto"
   Offset _calcPosition = const Offset(100, 100);
+  Timer? _debounceSaveTimer;
 
   @override
   void initState() {
@@ -140,6 +142,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
 
   @override
   void dispose() {
+    _debounceSaveTimer?.cancel();
     _disposeControllers();
     _manualPozoIdController.dispose();
     _manualBarrasController.dispose();
@@ -147,6 +150,13 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
     _manualBarrilController.dispose();
     _manualContraController.dispose();
     super.dispose();
+  }
+
+  void _saveExerciseStateDebounced() {
+    _debounceSaveTimer?.cancel();
+    _debounceSaveTimer = Timer(const Duration(milliseconds: 500), () {
+      _saveExerciseState();
+    });
   }
 
   void _disposeControllers() {
@@ -1450,7 +1460,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
           ),
         ),
         onChanged: (_) {
-          _saveExerciseState();
+          _saveExerciseStateDebounced();
         },
       ),
     );
@@ -1473,7 +1483,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
       controller.text = text + value;
       controller.selection = TextSelection.collapsed(offset: controller.text.length);
     }
-    _saveExerciseState();
+    _saveExerciseStateDebounced();
   }
 
   void _onKeyboardBackspace() {
@@ -1496,7 +1506,7 @@ class _EjerciciosCuadernoScreenState extends State<EjerciciosCuadernoScreen> {
         controller.selection = TextSelection.collapsed(offset: start - 1);
       }
     }
-    _saveExerciseState();
+    _saveExerciseStateDebounced();
   }
 
   void _onKeyboardDone() {

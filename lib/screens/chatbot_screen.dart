@@ -57,6 +57,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     ),
   ];
 
+  @override
+  void dispose() {
+    _inputController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _sendMessage(String text) {
     final query = text.trim();
     if (query.isEmpty) return;

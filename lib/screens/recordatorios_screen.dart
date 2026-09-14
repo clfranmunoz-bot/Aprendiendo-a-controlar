@@ -92,19 +92,25 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
       if (!mounted) return;
       final ahora = DateTime.now();
       bool hayAlarmasSonando = false;
+      bool necesitaRebuild = false;
 
-      setState(() {
-        for (var r in _recordatorios) {
-          if (r['completado'] == false && r['disparado'] == false) {
-            final targetMs = r['targetTime'] as int;
-            final diff = targetMs - ahora.millisecondsSinceEpoch;
-            if (diff <= 0) {
-              r['disparado'] = true;
-              hayAlarmasSonando = true;
-            }
+      for (var r in _recordatorios) {
+        if (r['completado'] == false && r['disparado'] == false) {
+          final targetMs = r['targetTime'] as int;
+          final diff = targetMs - ahora.millisecondsSinceEpoch;
+          if (diff <= 0) {
+            r['disparado'] = true;
+            hayAlarmasSonando = true;
+            necesitaRebuild = true;
+          } else {
+            necesitaRebuild = true; // Solo rebuild si hay una cuenta regresiva activa visible
           }
         }
-      });
+      }
+
+      if (necesitaRebuild) {
+        setState(() {});
+      }
 
       if (hayAlarmasSonando) {
         _comprobarAlarmasSonando();
@@ -142,6 +148,7 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
       _presets = List.from(_defaultPresets);
     }
 
+    if (!mounted) return;
     setState(() {
       _loading = false;
     });
@@ -360,7 +367,10 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
           );
         },
       ),
-    );
+    ).whenComplete(() {
+      tituloCtrl.dispose();
+      customMinCtrl.dispose();
+    });
   }
 
   void _crearPersonalizado() {
@@ -664,7 +674,11 @@ class _RecordatoriosScreenState extends State<RecordatoriosScreen> with SingleTi
           );
         },
       ),
-    );
+    ).whenComplete(() {
+      tituloCtrl.dispose();
+      notasCtrl.dispose();
+      customMinCtrl.dispose();
+    });
   }
 
   void _postergarAlarma(Map<String, dynamic> item, int minutos) {

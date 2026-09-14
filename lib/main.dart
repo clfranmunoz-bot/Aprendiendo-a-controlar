@@ -731,8 +731,9 @@ class _RootNavigatorState extends State<_RootNavigator> {
 
   Future<void> _checkOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
-    final seen = prefs.getBool('onboarding_seen') ?? false;
+    final seen = prefs.getBool('onboarding_visto') ?? prefs.getBool('onboarding_seen') ?? false;
     if (!seen) {
+      if (!mounted) return;
       setState(() {
         _onboardingSeen = false;
       });

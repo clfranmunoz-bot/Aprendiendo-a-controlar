@@ -518,26 +518,28 @@ class _MapaSatelitalScreenState extends State<MapaSatelitalScreen> with SingleTi
                           final latLng = _faenaActiva.normalizedToLatLng(norm);
                           _abrirCrearPunto(coordenadaInicial: latLng);
                         },
-                        child: AnimatedBuilder(
-                          animation: _pulseController,
-                          builder: (context, _) {
-                            return CustomPaint(
-                              size: Size(_canvasWidth, _canvasHeight),
-                              painter: MapaCanvasPainter(
-                                imagenSatelital: _imagenSatelital,
-                                faena: _faenaActiva,
-                                puntos: _puntos,
-                                puntoSeleccionado: _puntoSeleccionado,
-                                posicionUsuario: _posicionUsuario,
-                                precisionMetros: _precisionGpsMetros,
-                                rumboUsuario: _rumboUsuario,
-                                mostrarGrillaUtm: _mostrarGrillaUtm,
-                                mostrarMarcadores: _mostrarMarcadores,
-                                escalaZoom: _transformController.value.getMaxScaleOnAxis(),
-                                pulsoAnimacion: _pulseController.value,
-                              ),
-                            );
-                          },
+                        child: RepaintBoundary(
+                          child: AnimatedBuilder(
+                            animation: _pulseController,
+                            builder: (context, _) {
+                              return CustomPaint(
+                                size: Size(_canvasWidth, _canvasHeight),
+                                painter: MapaCanvasPainter(
+                                  imagenSatelital: _imagenSatelital,
+                                  faena: _faenaActiva,
+                                  puntos: _puntos,
+                                  puntoSeleccionado: _puntoSeleccionado,
+                                  posicionUsuario: _posicionUsuario,
+                                  precisionMetros: _precisionGpsMetros,
+                                  rumboUsuario: _rumboUsuario,
+                                  mostrarGrillaUtm: _mostrarGrillaUtm,
+                                  mostrarMarcadores: _mostrarMarcadores,
+                                  escalaZoom: _transformController.value.getMaxScaleOnAxis(),
+                                  pulsoAnimacion: _pulseController.value,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

@@ -37,11 +37,19 @@ class _QuizScreenState extends State<QuizScreen> {
   Future<void> _loadHistorial() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      final perfilActivo = prefs.getString('perfil_activo') ?? 'Usuario Principal';
       final list = prefs.getStringList('quiz_historial') ?? [];
-      final temp = list.map((item) {
-        return jsonDecode(item) as Map<String, dynamic>;
-      }).toList();
+      final temp = <Map<String, dynamic>>[];
+      for (final item in list) {
+        try {
+          final decoded = jsonDecode(item) as Map<String, dynamic>;
+          if (decoded['perfil'] == null || decoded['perfil'] == perfilActivo) {
+            temp.add(decoded);
+          }
+        } catch (_) {}
+      }
       temp.sort((a, b) => b['fecha'].toString().compareTo(a['fecha'].toString()));
+      if (!mounted) return;
       setState(() {
         _historial = temp;
       });
@@ -53,7 +61,21 @@ class _QuizScreenState extends State<QuizScreen> {
   Future<void> _clearHistorial() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('quiz_historial');
+      final perfilActivo = prefs.getString('perfil_activo') ?? 'Usuario Principal';
+      final list = prefs.getStringList('quiz_historial') ?? [];
+      final remaining = <String>[];
+      for (final item in list) {
+        try {
+          final decoded = jsonDecode(item) as Map<String, dynamic>;
+          if (decoded['perfil'] != null && decoded['perfil'] != perfilActivo) {
+            remaining.add(item);
+          }
+        } catch (_) {
+          remaining.add(item);
+        }
+      }
+      await prefs.setStringList('quiz_historial', remaining);
+      if (!mounted) return;
       setState(() {
         _historial.clear();
       });

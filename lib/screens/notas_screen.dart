@@ -260,7 +260,15 @@ class _NotasScreenState extends State<NotasScreen> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: File(pathFotoSel!).existsSync()
-                              ? Image.file(File(pathFotoSel!), fit: BoxFit.cover)
+                              ? Image.file(
+                                  File(pathFotoSel!),
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Container(
+                                    color: Colors.grey.shade300,
+                                    alignment: Alignment.center,
+                                    child: const Text("📷 Imagen Capturada (Referencia)"),
+                                  ),
+                                )
                               : Container(
                                   color: Colors.grey.shade300,
                                   alignment: Alignment.center,
@@ -315,7 +323,10 @@ class _NotasScreenState extends State<NotasScreen> {
           },
         );
       },
-    );
+    ).whenComplete(() {
+      tituloCtrl.dispose();
+      contenidoCtrl.dispose();
+    });
   }
 
   void _mostrarDialogoDictadoVoz(BuildContext context, Function(String) onTextoDictado) {
@@ -388,7 +399,7 @@ class _NotasScreenState extends State<NotasScreen> {
           ),
         ],
       ),
-    );
+    ).whenComplete(() => tempCtrl.dispose());
   }
 
   Future<String?> _capturarOTomarFoto(BuildContext context) async {
@@ -685,7 +696,15 @@ class _NotasScreenState extends State<NotasScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: File(nota.pathFoto!).existsSync()
-                      ? Image.file(File(nota.pathFoto!), fit: BoxFit.cover)
+                      ? Image.file(
+                          File(nota.pathFoto!),
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            color: Colors.grey.shade200,
+                            alignment: Alignment.center,
+                            child: const Text("📷 Imagen Adjunta (Referencia de Terreno)"),
+                          ),
+                        )
                       : Container(
                           color: Colors.grey.shade200,
                           alignment: Alignment.center,

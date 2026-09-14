@@ -39,7 +39,7 @@ class _ShortcutSlotState extends State<ShortcutSlot> {
         onTapDown: (_) => setState(() => _scale = 0.98),
         onTapUp: (_) => setState(() => _scale = 1.01),
         onTapCancel: () => setState(() => _scale = 1.0),
-        onTap: widget.isEditable && !isEmpty ? null : widget.onTap,
+        onTap: widget.onTap,
         child: AnimatedScale(
           scale: _scale,
           duration: const Duration(milliseconds: 150),

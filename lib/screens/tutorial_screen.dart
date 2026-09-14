@@ -217,25 +217,33 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   void _nextPage() {
     if (_paginaActual < _totalPasos - 1) {
-      _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+      if (_pageController.hasClients) {
+        _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+      }
     } else if (_faseActual < _fases.length - 1) {
       setState(() {
         _faseActual++;
         _paginaActual = 0;
       });
-      _pageController.jumpToPage(0);
+      if (_pageController.hasClients) {
+        _pageController.jumpToPage(0);
+      }
     }
   }
 
   void _prevPage() {
     if (_paginaActual > 0) {
-      _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+      if (_pageController.hasClients) {
+        _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+      }
     } else if (_faseActual > 0) {
       setState(() {
         _faseActual--;
         _paginaActual = _pasosActuales.length - 1;
       });
-      _pageController.jumpToPage(_totalPasos - 1);
+      if (_pageController.hasClients) {
+        _pageController.jumpToPage(_totalPasos - 1);
+      }
     }
   }
 

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class ChatbotKnowledgeService {
   // Red amplia de sinónimos y jerga operacional de perforación diamantina (DDH)
   static const Map<String, String> _synonyms = {
@@ -701,26 +699,34 @@ class ChatbotKnowledgeService {
     }
 
     // 2. RECONOCER CASO CÁLCULO DE RECUPERACIÓN (%REC)
-    if ((query.contains("recuperacion") || query.contains("rec") || query.contains("testigo")) && numeros.length >= 2) {
-      final val1 = numeros[0];
-      final val2 = numeros[1];
+    if ((query.contains("recuperacion") || query.contains("rec") || query.contains("testigo") || query.contains("perfore")) && numeros.length >= 2) {
+      double perforado = numeros[0];
+      double recuperado = numeros[1];
 
-      final perforado = max(val1, val2);
-      final recuperado = min(val1, val2);
+      // Si el usuario especificó "recupere X y perfore Y", ajustar orden
+      if (query.indexOf("recuper") < query.indexOf("perfor") && query.contains("perfor")) {
+        recuperado = numeros[0];
+        perforado = numeros[1];
+      }
 
       if (perforado > 0) {
         final recPct = (recuperado / perforado) * 100.0;
         final perd = perforado - recuperado;
 
-        final alertMsg = recPct >= 95.0
-            ? "✅ **Recuperación Óptima:** Cumple con el estándar minero (+95%)."
-            : "⚠️ **Alerta de Pérdida:** %Rec < 95%. Debes colocar un taco de madera/marcador indicando una pérdida de ${perd.toStringAsFixed(2)} m.";
+        String alertMsg;
+        if (recPct > 100.0) {
+          alertMsg = "ℹ️ **Recuperación > 100% (${recPct.toStringAsFixed(1)}%):** Anomalía operacional común por **rezago de testigo** atrapado en la corrida anterior (+${(recuperado - perforado).toStringAsFixed(2)} m de exceso).";
+        } else if (recPct >= 95.0) {
+          alertMsg = "✅ **Recuperación Óptima (${recPct.toStringAsFixed(1)}%):** Cumple con el estándar minero (+95%).";
+        } else {
+          alertMsg = "⚠️ **Alerta de Pérdida (${recPct.toStringAsFixed(1)}%):** %Rec < 95%. Debes colocar un taco de madera/marcador indicando una pérdida de ${perd.toStringAsFixed(2)} m.";
+        }
 
         final resp = "🧮 **CÁLCULO DE RECUPERACIÓN DE TESTIGO**\n\n"
             "• **Metros Perforados:** `${perforado.toStringAsFixed(2)} m`\n"
             "• **Testigo Recuperado:** `${recuperado.toStringAsFixed(2)} m`\n\n"
             "📊 **PORCENTAJE DE RECUPERACIÓN = ${recPct.toStringAsFixed(2)}%**\n"
-            "• **Pérdida de testigo:** `${perd.toStringAsFixed(2)} m`\n\n"
+            "${recPct <= 100 ? "• **Pérdida de testigo:** `${perd.toStringAsFixed(2)} m`\n\n" : "\n"}"
             "$alertMsg";
 
         return {
@@ -751,9 +757,6 @@ class ChatbotKnowledgeService {
           return item;
         }
       }
-    }
-    if (calculoAuto != null) {
-      return calculoAuto;
     }
 
     final normalizedQuery = _normalize(consulta);

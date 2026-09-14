@@ -40,27 +40,50 @@ class _StatsScreenState extends State<StatsScreen> {
     
     final prefs = await SharedPreferences.getInstance();
     final perfil = prefs.getString('perfil_activo') ?? 'Usuario Principal';
-    final histJson = prefs.getString('${perfil}_historial_turnos');
     final List<Map<String, dynamic>> histTurnos = [];
-    if (histJson != null) {
-      try {
-        final decoded = (histJson.split('||')).where((s) => s.isNotEmpty);
-        for (final entry in decoded) {
-          final parts = entry.split('|');
-          if (parts.length >= 3) {
-            histTurnos.add({
-              'inicio': parts[0],
-              'cierre': parts[1],
-              'porcentaje': double.tryParse(parts[2]) ?? 0.0,
-            });
-          }
+
+    // 1. Cargar desde checklist_${perfil}_historial (formato primario de checklist_screen)
+    final checklistRaw = prefs.getStringList('checklist_${perfil}_historial');
+    if (checklistRaw != null && checklistRaw.isNotEmpty) {
+      for (final item in checklistRaw) {
+        final parts = item.split('|');
+        if (parts.isNotEmpty) {
+          final fecha = parts[0];
+          final compStr = parts.length > 1 ? parts[1] : "100%";
+          final duracion = parts.length > 2 ? parts[2] : "Turno";
+          final numMatch = RegExp(r'(\d+(\.\d+)?)').firstMatch(compStr);
+          final pct = numMatch != null ? (double.tryParse(numMatch.group(1)!) ?? 100.0) : 100.0;
+          histTurnos.add({
+            'inicio': "Duración: $duracion",
+            'cierre': fecha,
+            'porcentaje': pct,
+          });
         }
-      } catch (_) {}
+      }
+    } else {
+      // 2. Fallback: formato legacy '${perfil}_historial_turnos'
+      final histJson = prefs.getString('${perfil}_historial_turnos');
+      if (histJson != null) {
+        try {
+          final decoded = (histJson.split('||')).where((s) => s.isNotEmpty);
+          for (final entry in decoded) {
+            final parts = entry.split('|');
+            if (parts.length >= 3) {
+              histTurnos.add({
+                'inicio': parts[0],
+                'cierre': parts[1],
+                'porcentaje': double.tryParse(parts[2]) ?? 0.0,
+              });
+            }
+          }
+        } catch (_) {}
+      }
     }
 
+    if (!mounted) return;
     setState(() {
       _historial = data;
-      _historialTurnos = histTurnos.reversed.toList();
+      _historialTurnos = histTurnos;
       _isLoading = false;
     });
   }
@@ -90,6 +113,7 @@ class _StatsScreenState extends State<StatsScreen> {
       final prefs = await SharedPreferences.getInstance();
       final perfil = prefs.getString('perfil_activo') ?? 'Usuario Principal';
       await prefs.remove('${perfil}_historial_turnos');
+      await prefs.remove('checklist_${perfil}_historial');
       await _cargarHistorial();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -445,20 +469,22 @@ class _StatsScreenState extends State<StatsScreen> {
           children: [
             Icon(icon, color: colors.azul, size: 28),
             const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: TextStyle(color: colors.grisTexto, fontSize: 12)),
-                const SizedBox(height: 2),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: colorText,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: TextStyle(color: colors.grisTexto, fontSize: 12), overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 2),
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: colorText,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -535,7 +561,8 @@ class _LearningCurvePainter extends CustomPainter {
         text: textSpan,
         textDirection: TextDirection.ltr,
       )..layout();
-      textPainter.paint(canvas, Offset(4, y - 10));
+      final labelY = (y - 10).clamp(0.0, size.height - 12.0);
+      textPainter.paint(canvas, Offset(4, labelY));
     }
 
     final int pointsCount = graphData.length;
@@ -578,5 +605,13 @@ class _LearningCurvePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _LearningCurvePainter oldDelegate) => true;
+  bool shouldRepaint(covariant _LearningCurvePainter oldDelegate) {
+    if (data.length != oldDelegate.data.length || colors.isDark != oldDelegate.colors.isDark) {
+      return true;
+    }
+    for (int i = 0; i < data.length; i++) {
+      if (data[i] != oldDelegate.data[i]) return true;
+    }
+    return false;
+  }
 }

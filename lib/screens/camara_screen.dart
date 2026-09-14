@@ -61,6 +61,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
   Future<void> _inicializarCamara() async {
     // If not mobile, force simulation
     if (kIsWeb || (!Platform.isAndroid && !Platform.isIOS)) {
+      if (!mounted) return;
       setState(() {
         _isSimulated = true;
         _isInitialized = true;
@@ -71,6 +72,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
     try {
       final cameras = await availableCameras();
       if (cameras.isEmpty) {
+        if (!mounted) return;
         setState(() {
           _isSimulated = true;
           _isInitialized = true;
@@ -80,7 +82,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
 
       _controller = CameraController(
         cameras.first,
-        ResolutionPreset.max,
+        ResolutionPreset.high,
         enableAudio: false,
       );
 
@@ -194,7 +196,7 @@ class _CamaraScreenState extends State<CamaraScreen> {
     }
 
     try {
-      if (Platform.isAndroid || Platform.isIOS) {
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
         _mostrarSnackBar("Guardando foto en galería...", Colors.blue);
         final bool? result = await _galleryChannel.invokeMethod<bool>(
           'saveImage',

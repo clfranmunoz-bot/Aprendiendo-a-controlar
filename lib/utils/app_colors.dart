@@ -46,6 +46,14 @@ class AppColors {
   Color get menu14 => isDark ? const Color(0xFF74B3E8) : const Color(0xFF1D5FA8); // Azul marino
   Color get menu15 => isDark ? const Color(0xFFA8D5A2) : const Color(0xFF3A6B35); // Verde oscuro
   Color get menu16 => isDark ? const Color(0xFFE8C87A) : const Color(0xFF8B6914); // Dorado
+  Color get menu17 => isDark ? const Color(0xFF64DFDF) : const Color(0xFF0077B6); // Cyan / Estadísticas
+  Color get menu18 => isDark ? const Color(0xFFFFB703) : const Color(0xFFD48B00); // Ámbar / Tutorial
+  Color get menu19 => isDark ? const Color(0xFFA594F9) : const Color(0xFF5A4FCF); // Índigo / Formulario
+  Color get menu20 => isDark ? const Color(0xFF52B788) : const Color(0xFF2D6A4F); // Esmeralda / Chatbot
+  Color get menu21 => isDark ? const Color(0xFFFF758F) : const Color(0xFFC9184A); // Coral / Notas
+  Color get menu22 => isDark ? const Color(0xFFB5179E) : const Color(0xFF7209B7); // Púrpura / Simulacro
+  Color get menu23 => isDark ? const Color(0xFF48CAE4) : const Color(0xFF023E8A); // Cobalto / Instructor
+  Color get menu24 => isDark ? const Color(0xFFF72585) : const Color(0xFFB5179E); // Rubí / Especial
 
   Color getMenuColor(int index) {
     switch (index) {
@@ -65,6 +73,14 @@ class AppColors {
       case 14: return menu14;
       case 15: return menu15;
       case 16: return menu16;
+      case 17: return menu17;
+      case 18: return menu18;
+      case 19: return menu19;
+      case 20: return menu20;
+      case 21: return menu21;
+      case 22: return menu22;
+      case 23: return menu23;
+      case 24: return menu24;
       default: return azul;
     }
   }

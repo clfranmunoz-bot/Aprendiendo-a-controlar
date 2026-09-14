@@ -296,7 +296,9 @@ class _GlosarioScreenState extends State<GlosarioScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
             decoration: BoxDecoration(color: catBg, borderRadius: BorderRadius.circular(6)),
             child: Text(
-              item.categoria.replaceFirst(RegExp(r'^. '), ''),
+              item.categoria.contains(' ')
+                  ? item.categoria.substring(item.categoria.indexOf(' ') + 1)
+                  : item.categoria,
               style: TextStyle(color: catColor, fontSize: 10, fontWeight: FontWeight.bold),
             ),
           ),
@@ -304,7 +306,7 @@ class _GlosarioScreenState extends State<GlosarioScreen> {
         leading: CircleAvatar(
           backgroundColor: colors.purpuraClaro,
           child: Text(
-            item.termino[0].toUpperCase(),
+            item.termino.isNotEmpty ? item.termino.characters.first.toUpperCase() : "?",
             style: TextStyle(color: colors.purpura, fontWeight: FontWeight.bold),
           ),
         ),

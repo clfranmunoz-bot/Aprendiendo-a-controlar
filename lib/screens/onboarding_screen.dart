@@ -39,9 +39,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
   ];
 
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   Future<void> _completarOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_visto', true);
     await prefs.setBool('onboarding_seen', true);
+    if (!mounted) return;
     widget.onNavigate(AppRoutes.home);
   }
 

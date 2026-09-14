@@ -585,7 +585,7 @@ class HeroBlock extends StatelessWidget {
                       context,
                       icon: "🔐",
                       titulo: "PIN y Accesos de Instructor",
-                      contenido: "• PIN Instructor por defecto: 9900\n(Para permisos avanzados de supervisión, consulta con tu instructor responsable)."
+                      contenido: "Permisos avanzados para instructores y supervisores. Solicita tu PIN de acceso al instructor responsable.",
                     ),
                     _buildInfoSection(
                       context,
